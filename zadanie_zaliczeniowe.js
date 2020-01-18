@@ -419,9 +419,16 @@ function zwrocRozmCzcionki(liczbaWyst) {
 
 let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
 
+function test() {
+    let slowo = this.innerText;
+    window.alert("Klikneles tag: " + slowo);
+}
+
+
 let listaSlow = document.createElement("ol");
 for (let i = 0; i < unikalneSlowa.length; i++) {
     let eltListy = document.createElement("li");
+    eltListy.onclick = test;
     eltListy.style.fontSize = rozmCzcionki[i];
     eltListy.innerHTML = unikalneSlowa[i];
     listaSlow.appendChild(eltListy);
@@ -429,4 +436,4 @@ for (let i = 0; i < unikalneSlowa.length; i++) {
 
 // umieszczenie listy slow wykrzacza filtrowanie, a moze i cos jeszcze
 // uzyc gdzies querySelector() aby byc dokladniejszym
-// output.insertBefore(listaSlow, listaKafelkow);
+output.insertBefore(listaSlow, listaKafelkow);

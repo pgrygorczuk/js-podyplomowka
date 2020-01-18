@@ -48,5 +48,8 @@ ul {
 
 ol > li {
     /* list-style-type: none; */
-    display: inline;
+    display: inline-block;
+    list-style-type: none;
+    padding: 5px;
+    cursor: pointer;
 }
