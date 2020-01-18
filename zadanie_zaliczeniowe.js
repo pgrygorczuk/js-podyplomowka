@@ -458,8 +458,17 @@ function zwrocRozmCzcionki(liczbaWyst) {
 
 let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
 
-function test() {
-    console.log("w funkcji test");
+
+// Kliknięcie w tag powoduje odfiltrowanie filmów - 
+// wyświetlone zostaną tylko te, których tytuł zawiera wskazane słowo
+// (pamiętaj o aktualizacji napisu wyświetlającego liczbę widocznych
+// filmów). Dodaj również specjalny tag "wszystkie" w celu
+// wyświetlenia wszystkich filmów.
+
+// brak danych czy filtrowanie po tagu ma miec efekt
+// AND w stosunku do filtrowania po roku?
+// na razie dano 2 oddzielne filtrowania, a potem jak cos to to mozna zmienic
+function filtrujPoTagu() {
     let slowo = this.innerText;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
@@ -474,7 +483,7 @@ function test() {
 let listaSlow = document.createElement("ol");
 for (let i = 0; i < unikalneSlowa.length; i++) {
     let eltListy = document.createElement("li");
-    eltListy.onclick = test;
+    eltListy.onclick = filtrujPoTagu;
     eltListy.style.fontSize = rozmCzcionki[i];
     eltListy.innerHTML = unikalneSlowa[i];
     listaSlow.appendChild(eltListy);
