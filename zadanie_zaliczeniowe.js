@@ -203,7 +203,7 @@ output.appendChild(listaKafelkow);
 
 
 updateFilmyIwidoczne();
-wyswietlFilmyiWidoczne();
+wyswietlFilmyIwidoczne();
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -252,7 +252,7 @@ function filtrujRok() {
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
-    wyswietlFilmyiWidoczne();
+    wyswietlFilmyIwidoczne();
 }
 
 let select = document.createElement("select");
@@ -272,7 +272,7 @@ function pokazWszystkieFilmy() {
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
-    wyswietlFilmyiWidoczne();
+    wyswietlFilmyIwidoczne();
 }
 
 
@@ -303,7 +303,11 @@ output.prepend(parWybierzRok, select,
 function liczWidoczne() {
     let ileWidocznych = 0;
 
-    let wszystkieLI = document.getElementsByTagName("li");
+    // let wszystkieLI = document.getElementsByTagName("li");
+    // zastapiono ponizszym bo przy tagach i klinieciu buttona
+    // pokaz wszystkie filmy
+    // wyswietlalo nieprawidlowa liczbe aktualnie widocznych filmow
+    let wszystkieLI = document.querySelectorAll("ul > li");
     
     for (let i = 0; i < wszystkieLI.length; i++) {
 	if (!wszystkieLI[i].hidden){
@@ -318,7 +322,7 @@ function updateFilmyIwidoczne() {
     liczbaWidocznych = liczWidoczne();
 }
 
-function wyswietlFilmyiWidoczne() {
+function wyswietlFilmyIwidoczne() {
     
     let starePar = document.getElementsByTagName("p");
     
