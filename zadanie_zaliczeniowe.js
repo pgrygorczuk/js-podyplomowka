@@ -265,9 +265,31 @@ for (let i = 0; i < unikalnePremiery.length; i++) {
     select.appendChild(opcja);
 }
 
+function pokazWszystkieFilmy() {
+    usunListeKafelkow(); 	// usuwa liste kafelkow
+    // a teraz ja odtwarza
+    output.appendChild(utworzListeKafelkow(listOfMovies));
+    
+    // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+    updateFilmyIwidoczne();
+    wyswietlFilmyiWidoczne();
+}
+
+
+// oprocz selecta
+// dodamy tez guzik pokaz wszystkie filmy (aby resetowac)
+// mimo, ze tego nie ma w poleceniu
 let parWybierzRok = document.createElement("p").innerHTML="Wybierz rok filmu: ";
-output.prepend(parWybierzRok, select); 	// aby selecta z filtrowaniem dac wczesniej
+let przyciskShowAllMovies = document.createElement("input");
+przyciskShowAllMovies.setAttribute("type", "button");
+przyciskShowAllMovies.value = "pokaz wszystkie filmy";
+przyciskShowAllMovies.onclick = pokazWszystkieFilmy;
+
+output.prepend(parWybierzRok, select, 
+' ', przyciskShowAllMovies); 	// aby selecta z filtrowaniem dac wczesniej
 // ewentualnie mozna dac firstChild czy cos takiego
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
