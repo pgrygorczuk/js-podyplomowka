@@ -41,6 +41,7 @@ const listOfMovies = [
     'Panna Nikt (2010)',
     'Panna Julia (1951)'
 ];
+let tytuly = listOfMovies.map((film) => getTitle(film));
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -126,20 +127,20 @@ function utworzKafelek(film) {
 // kazdy li to div.kafelek, a ten z kolei to 2 divy:
 // div.tytul
 // div.rok
-function utworzListeKafelkow(tabFilmow, rok) {
+function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
     
     // tworzymy liste ktora bedziemy zapelniac elementami
     // ktore beda kafelkami
     let listaKafelkow = document.createElement("ul");
     
     let innyKolor = true;
-    let ukryj = arguments.length == 2; // jeli wpisano rok (2 argumenty) to filtrujemy (ukrywajac)
 
     // dla kazdego filmu utworzymy element listy
     // w ktorym beda 2 divy z kafelkami
     // i w tych div-ach osobno rok i tytul
 
-    if (!ukryj) { // jesli nie podano roku to wypisz wszystkie normalnie
+    // jesli nie podano roku i slowa Kluczowego to wypisz wszystkie normalnie
+    if (!rok & !slowoKluczowe) {
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
 	    // tworzymy element listy
@@ -161,20 +162,25 @@ function utworzListeKafelkow(tabFilmow, rok) {
 	    // na koniec toggle-ujemy kolor
 	    innyKolor = !innyKolor;
 	}
-    } else { 		
+    } else { // w przeciwnym przypadku trzeba cos ukryc
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
 	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
-	    if (ukryj) { 
+	    // jesli jest podany rok lub slowoKluczowe to po nim filtrujemy
+	    if (rok) {   
 		
 		// tworzymy element listy
 		let eltListy = document.createElement("li");
 
 		let kafelek = utworzKafelek(tabFilmow[i]);
-		
-		if (rok != getYear(tabFilmow[i])) { // != bo getYear() zwraca rok jako string
+
+		// filtrowanie po roku
+		// != bo getYear() zwraca rok jako string
+		if (rok != getYear(tabFilmow[i])) { 
 		    eltListy.hidden = true;
-		} else { 	// zmienamy (naprzemiennie) i togglujemy kolor tylko dla widocznych kafelkow
+		} else { 	
+		    // zmienamy (naprzemiennie) i 
+		    // togglujemy kolor tylko dla widocznych kafelkow
 
 		    if (innyKolor) {
 			// co drugi bedzie mial inny kolor
@@ -184,12 +190,42 @@ function utworzListeKafelkow(tabFilmow, rok) {
 		    // toggle-ujemy kolor
 		    innyKolor = !innyKolor;
 		}
-		
+
 		// dodajemy kafelek do eleListy
 		eltListy.appendChild(kafelek);
 		
 		// dodaj eltListy do listyKafelkow
 		listaKafelkow.appendChild(eltListy);
+	    } else if (slowoKluczowe) { // a jesli slowo kluczowe to po nim
+		// tworzymy element listy
+		let eltListy = document.createElement("li");
+
+		let kafelek = utworzKafelek(tabFilmow[i]);
+
+		// filtrowanie po roku
+		// != bo getYear() zwraca rok jako string
+		if (tytuly[i].toLocaleLowerCase().
+		    indexOf(slowoKluczowe) === -1) { 
+		    eltListy.hidden = true;
+		} else { 	
+		    // zmienamy (naprzemiennie) i 
+		    // togglujemy kolor tylko dla widocznych kafelkow
+
+		    if (innyKolor) {
+			// co drugi bedzie mial inny kolor
+			kafelek.classList.add("inny_kolor");
+		    }
+
+		    // toggle-ujemy kolor
+		    innyKolor = !innyKolor;
+		}
+
+		// dodajemy kafelek do eleListy
+		eltListy.appendChild(kafelek);
+		
+		// dodaj eltListy do listyKafelkow
+		listaKafelkow.appendChild(eltListy);
+		
 	    }
 	}
 	
@@ -248,7 +284,7 @@ function filtrujRok() {
     let wybrRok = this.innerHTML;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies, wybrRok));
+    output.appendChild(utworzListeKafelkow(listOfMovies, wybrRok, false));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
@@ -286,7 +322,7 @@ przyciskShowAllMovies.value = "pokaz wszystkie filmy";
 przyciskShowAllMovies.onclick = pokazWszystkieFilmy;
 
 output.prepend(parWybierzRok, select, 
-' ', przyciskShowAllMovies); 	// aby selecta z filtrowaniem dac wczesniej
+	       ' ', przyciskShowAllMovies); 	// aby selecta z filtrowaniem dac wczesniej
 // ewentualnie mozna dac firstChild czy cos takiego
 
 
@@ -366,7 +402,6 @@ function getSlowa(tytul) {
 }
 
 
-let tytuly = listOfMovies.map((film) => getTitle(film));
 let slowa = [];
 for (let i = 0; i < tytuly.length; i++) {
     let zJednegoTytulu = getSlowa(tytuly[i]);
@@ -424,8 +459,15 @@ function zwrocRozmCzcionki(liczbaWyst) {
 let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
 
 function test() {
+    console.log("w funkcji test");
     let slowo = this.innerText;
-    window.alert("Klikneles tag: " + slowo);
+    usunListeKafelkow(); 	// usuwa liste kafelkow
+    // a teraz ja odtwarza
+    output.appendChild(utworzListeKafelkow(listOfMovies, false, slowo));
+    
+    // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+    updateFilmyIwidoczne();
+    wyswietlFilmyIwidoczne();
 }
 
 
