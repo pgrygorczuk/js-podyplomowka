@@ -140,7 +140,7 @@ function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
     // i w tych div-ach osobno rok i tytul
 
     // jesli nie podano roku i slowa Kluczowego to wypisz wszystkie normalnie
-    if (!rok & !slowoKluczowe) {
+    if ((!rok && !slowoKluczowe) || slowoKluczowe == "wszystkie") {
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
 	    // tworzymy element listy
@@ -204,7 +204,8 @@ function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
 
 		// filtrowanie po roku
 		// != bo getYear() zwraca rok jako string
-		if (tytuly[i].toLocaleLowerCase().
+		if (slowoKluczowe != "wszystkie" &&
+		    tytuly[i].toLocaleLowerCase().
 		    indexOf(slowoKluczowe) === -1) { 
 		    eltListy.hidden = true;
 		} else { 	
@@ -481,6 +482,16 @@ function filtrujPoTagu() {
 
 
 let listaSlow = document.createElement("ol");
+
+// na poczatku listy jest slowo "wszystkie"
+let eltListy = document.createElement("li");
+eltListy.onclick = filtrujPoTagu;
+eltListy.style.fontSize = "20px";
+eltListy.style.color = "green";
+eltListy.innerHTML = "wszystkie";
+listaSlow.appendChild(eltListy);
+
+// i teraz for-em wprowadzam inne slowa
 for (let i = 0; i < unikalneSlowa.length; i++) {
     let eltListy = document.createElement("li");
     eltListy.onclick = filtrujPoTagu;
@@ -492,3 +503,15 @@ for (let i = 0; i < unikalneSlowa.length; i++) {
 // umieszczenie listy slow wykrzacza filtrowanie, a moze i cos jeszcze
 // uzyc gdzies querySelector() aby byc dokladniejszym
 output.insertBefore(listaSlow, listaKafelkow);
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                              zadanie (part 6)                             //
+/////////////////////////////////////////////////////////////////////////////// 
+
+// W dokumencie znajduje się przełącznik
+// (odpowiednio ostylowany element) pozwalający na włączenie
+// "trybu nocnego". Domyślnym trybem jest tryb dzienny
+// (elementy mają jasne tło). Włączenie trybu nocnego zmienia
+// wyświetlanie elementów (ciemne tło). Ponownie kliknięcie
+// przełącznika przywróci tryb dzienny.
