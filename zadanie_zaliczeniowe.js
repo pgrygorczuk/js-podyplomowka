@@ -127,8 +127,9 @@ function utworzKafelek(film) {
 // kazdy li to div.kafelek, a ten z kolei to 2 divy:
 // div.tytul
 // div.rok
-function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
-    
+function utworzListeKafelkow(tabFilmow, rok = "wybierz rok",
+			     slowoKluczowe = "wszystkie") {
+   
     // tworzymy liste ktora bedziemy zapelniac elementami
     // ktore beda kafelkami
     let listaKafelkow = document.createElement("ul");
@@ -140,7 +141,8 @@ function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
     // i w tych div-ach osobno rok i tytul
 
     // jesli nie podano roku i slowa Kluczowego to wypisz wszystkie normalnie
-    if ((!rok && !slowoKluczowe) || slowoKluczowe == "wszystkie") {
+    if ((rok == "wybierz rok") &&
+	(slowoKluczowe == "wszystkie")) {
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
 	    // tworzymy element listy
@@ -167,7 +169,7 @@ function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
 	    
 	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
 	    // jesli jest podany rok lub slowoKluczowe to po nim filtrujemy
-	    if (rok) {   
+	    if (rok != "wybierz rok") {   
 		
 		// tworzymy element listy
 		let eltListy = document.createElement("li");
@@ -196,7 +198,9 @@ function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
 		
 		// dodaj eltListy do listyKafelkow
 		listaKafelkow.appendChild(eltListy);
-	    } else if (slowoKluczowe) { // a jesli slowo kluczowe to po nim
+
+		// a jesli jest slowo kluczowe to po nim
+	    } else if (slowoKluczowe != "wszystkie") { 
 		// tworzymy element listy
 		let eltListy = document.createElement("li");
 
@@ -204,8 +208,7 @@ function utworzListeKafelkow(tabFilmow, rok = false, slowoKluczowe = false) {
 
 		// filtrowanie po roku
 		// != bo getYear() zwraca rok jako string
-		if (slowoKluczowe != "wszystkie" &&
-		    tytuly[i].toLocaleLowerCase().
+		if (tytuly[i].toLocaleLowerCase().
 		    indexOf(slowoKluczowe) === -1) { 
 		    eltListy.hidden = true;
 		} else { 	
@@ -276,6 +279,9 @@ let unikalnePremiery = getUniqueYears(listOfMovies);
 // (sort robi to inplace wiec nie trzeba tego ponownie przypisywac)
 unikalnePremiery.sort((a, b) => parseInt(a) - parseInt(b));
 
+// dodamy opje do selekta typu wybierz rok
+unikalnePremiery.unshift("wybierz rok"); // dodajemy z przodu listy
+
 function usunListeKafelkow() {
     let listaKafelkow = document.getElementsByTagName("ul")[0]; // jest tylko 1 ul (elt 0) w dokumencie
     listaKafelkow.remove();
@@ -285,7 +291,7 @@ function filtrujRok() {
     let wybrRok = this.innerHTML;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies, wybrRok, false));
+    output.appendChild(utworzListeKafelkow(listOfMovies, wybrRok, "wszystkie"));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
@@ -305,7 +311,7 @@ for (let i = 0; i < unikalnePremiery.length; i++) {
 function pokazWszystkieFilmy() {
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies));
+    output.appendChild(utworzListeKafelkow(listOfMovies, "wybierz rok", "wszystkie"));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
@@ -456,8 +462,17 @@ function zwrocRozmCzcionki(liczbaWyst) {
     return wynik;
 }
 
+// dodamy na poczatku ten tag "wszystkie" do wyswietlanie wszystkich filmow
+// lepiej byloby dac przycisk (tak jak ja to zrobilem) bo np. jakis film
+// bedzie zawieral slowo "wszystkie" i bedzie klopocik
+// (albo wiecej roboty aby to obsluzyc)
+// no ale zadanie to zadanie (tutaj zaden film nie ma slowa "wszystkie")
+// wiec nie ma problemu (dlubania) z tym tagiem
+unikalneSlowa.unshift("wszystkie");
+liczbWystSlowa.unshift(4); 	// da to czcionke = 20px
 
 let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
+
 
 
 // Kliknięcie w tag powoduje odfiltrowanie filmów - 
@@ -473,7 +488,7 @@ function filtrujPoTagu() {
     let slowo = this.innerText;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies, false, slowo));
+    output.appendChild(utworzListeKafelkow(listOfMovies, "wybierz rok", slowo));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
@@ -483,19 +498,15 @@ function filtrujPoTagu() {
 
 let listaSlow = document.createElement("ol");
 
-// na poczatku listy jest slowo "wszystkie"
-let eltListy = document.createElement("li");
-eltListy.onclick = filtrujPoTagu;
-eltListy.style.fontSize = "20px";
-eltListy.style.color = "green";
-eltListy.innerHTML = "wszystkie";
-listaSlow.appendChild(eltListy);
-
 // i teraz for-em wprowadzam inne slowa
 for (let i = 0; i < unikalneSlowa.length; i++) {
     let eltListy = document.createElement("li");
     eltListy.onclick = filtrujPoTagu;
     eltListy.style.fontSize = rozmCzcionki[i];
+    // tagowi "wszystkie dla odroznienia damy zielony kolor"
+    if (unikalneSlowa[i] == "wszystkie") {
+	eltListy.style.color = "green";
+    }
     eltListy.innerHTML = unikalneSlowa[i];
     listaSlow.appendChild(eltListy);
 }
