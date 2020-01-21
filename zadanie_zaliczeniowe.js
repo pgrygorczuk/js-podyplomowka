@@ -541,15 +541,8 @@ function zmienTryb() {
 
 }
 
-
 przyciskDzienNoc.onclick = zmienTryb;
 
-
-
-
 output.prepend(parTrybDzienny, przyciskDzienNoc, parTrybNocny);
-
-
-
 
 
