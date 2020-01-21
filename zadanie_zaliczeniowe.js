@@ -525,18 +525,16 @@ poleSpan.classList.add("slider");
 poleSpan.classList.add("round");
 przyciskDzienNoc.appendChild(poleInput);
 przyciskDzienNoc.appendChild(poleSpan);
-let dzien = true;
 
 function zmienTryb() {
     
-    if (!dzien){
+    let noc = poleInput.checked; // jesli zaznaczony checkbox (true) to tryb nocny
+    if (noc){
 	let cialo = document.getElementsByTagName("body")[0];
 	cialo.classList.add("tryb_nocny");
-	dzien = !dzien;
     } else {
 	let cialo = document.getElementsByTagName("body")[0];
 	cialo.classList.remove("tryb_nocny");
-	dzien = !dzien;
     }
 
 }
