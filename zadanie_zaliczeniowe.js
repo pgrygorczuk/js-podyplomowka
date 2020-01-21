@@ -507,3 +507,49 @@ output.insertBefore(listaSlow, listaKafelkow);
 // (elementy mają jasne tło). Włączenie trybu nocnego zmienia
 // wyświetlanie elementów (ciemne tło). Ponownie kliknięcie
 // przełącznika przywróci tryb dzienny.
+
+// // dodajemy przycisk w html
+let parTrybDzienny = document.createElement("p");
+parTrybDzienny.classList.add("tryb");
+parTrybDzienny.innerHTML = "Tryb dzienny &nbsp;";
+let parTrybNocny = document.createElement("p");
+parTrybNocny.classList.add("tryb");
+parTrybNocny.innerHTML = "&nbsp;Tryb nocny </br> </br>";
+
+let przyciskDzienNoc = document.createElement("label");
+przyciskDzienNoc.classList.add("switch");
+let poleInput = document.createElement("input");
+poleInput.type = "checkbox";
+let poleSpan = document.createElement("span");
+poleSpan.classList.add("slider");
+poleSpan.classList.add("round");
+przyciskDzienNoc.appendChild(poleInput);
+przyciskDzienNoc.appendChild(poleSpan);
+let dzien = true;
+
+function zmienTryb() {
+    
+    if (!dzien){
+	let cialo = document.getElementsByTagName("body")[0];
+	cialo.classList.add("tryb_nocny");
+	dzien = !dzien;
+    } else {
+	let cialo = document.getElementsByTagName("body")[0];
+	cialo.classList.remove("tryb_nocny");
+	dzien = !dzien;
+    }
+
+}
+
+
+przyciskDzienNoc.onclick = zmienTryb;
+
+
+
+
+output.prepend(parTrybDzienny, przyciskDzienNoc, parTrybNocny);
+
+
+
+
+
