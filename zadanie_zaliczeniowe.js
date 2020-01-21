@@ -554,6 +554,27 @@ output.prepend(parTrybDzienny, przyciskDzienNoc, parTrybNocny);
 // Spróbuj pozwolić na sortowanie rosnąco (po pierwszym naciśnięciu przycisku) i malejąco
 // (po drugim naciśnięciu przycisku).
 
+// zmnienia przeslany array (lista filmow)
+function sortujPoTytule(listaFilmow, rosnaco = true) {
+    if (rosnaco) {
+	listaFilmow.sort((a, b) => getTitle(a).localeCompare(getTitle(b)));
+    } else {
+	listaFilmow.sort((a, b) => getTitle(b).localeCompare(getTitle(a)));
+    }
+}
+
+function sortujPoRoku(listaFilmow, rosnaco = true) {
+    if (rosnaco) {
+	// getYear() zwraca rok jako string (np. "1998")
+	listaFilmow.sort((a, b) => parseInt(getYear(a)) - parseInt(getYear(b)));
+    } else {
+	listaFilmow.sort((a, b) => parseInt(getYear(b)) - parseInt(getYear(a)));
+    }
+}
+
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
