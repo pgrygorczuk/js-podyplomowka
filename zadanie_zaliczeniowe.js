@@ -534,6 +534,9 @@ function zmienTryb() {
     if (noc){
 	let cialo = document.getElementsByTagName("body")[0];
 	cialo.classList.add("tryb_nocny");
+	// ciemne tlo elementow bedzie stanowic
+	// szare tlo dokumentu i przeziernosc (opacity) kafelkow
+	// (patrz plik: styles.css)
     } else {
 	let cialo = document.getElementsByTagName("body")[0];
 	cialo.classList.remove("tryb_nocny");
@@ -555,24 +558,83 @@ output.prepend(parTrybDzienny, przyciskDzienNoc, parTrybNocny);
 // (po drugim naciśnięciu przycisku).
 
 // zmnienia przeslany array (lista filmow)
-function sortujPoTytule(listaFilmow, rosnaco = true) {
-    if (rosnaco) {
-	listaFilmow.sort((a, b) => getTitle(a).localeCompare(getTitle(b)));
+let tytulRosnaco = true;
+
+// funkcja sortujPoTytule zmienia w miejscu listOfMovies
+function sortujPoTytule() {
+
+    if (tytulRosnaco) {
+	listOfMovies.sort((a, b) => getTitle(a).localeCompare(getTitle(b)));
+	tytulRosnaco = !tytulRosnaco;
+	
+	usunListeKafelkow(); 	// usuwa liste kafelkow
+	// a teraz ja odtwarza
+	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	
+	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+	updateFilmyIwidoczne();
+	wyswietlFilmyIwidoczne();
+
     } else {
-	listaFilmow.sort((a, b) => getTitle(b).localeCompare(getTitle(a)));
+	listOfMovies.sort((a, b) => getTitle(b).localeCompare(getTitle(a)));
+	tytulRosnaco = !tytulRosnaco;
+
+	usunListeKafelkow(); 	// usuwa liste kafelkow
+	// a teraz ja odtwarza
+	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	
+	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+	updateFilmyIwidoczne();
+	wyswietlFilmyIwidoczne();
     }
 }
 
-function sortujPoRoku(listaFilmow, rosnaco = true) {
-    if (rosnaco) {
+let rokRosnaco = true;
+
+// funkcja sortujPoRoku zmienia w miejscu listOfMovies
+function sortujPoRoku() {
+ 
+    if (rokRosnaco) {
 	// getYear() zwraca rok jako string (np. "1998")
-	listaFilmow.sort((a, b) => parseInt(getYear(a)) - parseInt(getYear(b)));
+	listOfMovies.sort((a, b) => parseInt(getYear(a)) - parseInt(getYear(b)));
+	rokRosnaco = !rokRosnaco;
+	
+	usunListeKafelkow(); 	// usuwa liste kafelkow
+	// a teraz ja odtwarza
+	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	
+	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+	updateFilmyIwidoczne();
+	wyswietlFilmyIwidoczne();
+
     } else {
-	listaFilmow.sort((a, b) => parseInt(getYear(b)) - parseInt(getYear(a)));
+	listOfMovies.sort((a, b) => parseInt(getYear(b)) - parseInt(getYear(a)));
+	rokRosnaco = !rokRosnaco;
+	
+	usunListeKafelkow(); 	// usuwa liste kafelkow
+	// a teraz ja odtwarza
+	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	
+	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+	updateFilmyIwidoczne();
+	wyswietlFilmyIwidoczne();
+
     }
 }
 
+let parSortujPoTytule = document.createElement("input");
+parSortujPoTytule.setAttribute("type", "button");
+parSortujPoTytule.value = "Sortuj po tytule";
+parSortujPoTytule.onclick = sortujPoTytule;
 
+
+let parSortujPoRoku = document.createElement("input");
+parSortujPoRoku.setAttribute("type", "button");
+parSortujPoRoku.value = "Sortuj po roku";
+parSortujPoRoku.onclick = sortujPoRoku;
+
+output.insertBefore(parSortujPoTytule, listaSlow);
+output.insertBefore(parSortujPoRoku, listaSlow);
 
 
 
