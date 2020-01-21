@@ -351,7 +351,7 @@ function updateFilmyIwidoczne() {
 
 function wyswietlFilmyIwidoczne() {
     
-    let starePar = document.getElementsByTagName("p");
+    let starePar = document.querySelectorAll("p.liczba-filmow");
     
     if (starePar.length) { 	// jesli sa juz stare paragrafy
 	// to podmieniamy ich tresc
@@ -362,7 +362,9 @@ function wyswietlFilmyIwidoczne() {
     } else { 			// w przeciwnym wypadku tworzymy je
 	// i dodajemy
 	let filmy = document.createElement("p");
+	filmy.setAttribute("class", "liczba-filmow");
 	let widoczne = document.createElement("p");
+	widoczne.setAttribute("class", "liczba-filmow");
 
 	filmy.innerHTML = "Liczba wszystkich filmow w bazie: " +
 	    liczbaFilmow;
