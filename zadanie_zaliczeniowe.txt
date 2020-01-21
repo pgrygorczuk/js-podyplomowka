@@ -50,7 +50,9 @@ W dokumencie znajduje się przełącznik
 wyświetlanie elementów (ciemne tło). Ponownie kliknięcie
 przełącznika przywróci tryb dzienny.
 
-Dwa przyciski pozwalające na sortowanie filmów - alfabetycznie oraz po roku premiery. Spróbuj pozwolić na sortowanie rosnąco (po pierwszym naciśnięciu przycisku) i malejąco (po drugim naciśnięciu przycisku).
+Dwa przyciski pozwalające na sortowanie filmów - alfabetycznie oraz po roku premiery. 
+Spróbuj pozwolić na sortowanie rosnąco (po pierwszym naciśnięciu przycisku) i malejąco
+(po drugim naciśnięciu przycisku).
 
 Stwórz formularz z dwoma polami (rok i nazwa filmu) 
 umożliwiającymi dodanie nowego filmu i dodanie do go obecnej

@@ -546,3 +546,26 @@ przyciskDzienNoc.onclick = zmienTryb;
 output.prepend(parTrybDzienny, przyciskDzienNoc, parTrybNocny);
 
 
+///////////////////////////////////////////////////////////////////////////////
+//                              zadanie (part 7)                             //
+///////////////////////////////////////////////////////////////////////////////
+
+// Dwa przyciski pozwalające na sortowanie filmów - alfabetycznie oraz po roku premiery. 
+// Spróbuj pozwolić na sortowanie rosnąco (po pierwszym naciśnięciu przycisku) i malejąco
+// (po drugim naciśnięciu przycisku).
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                              zadanie (part 8)                             //
+///////////////////////////////////////////////////////////////////////////////
+
+// Stwórz formularz z dwoma polami (rok i nazwa filmu) 
+// umożliwiającymi dodanie nowego filmu i dodanie do go obecnej
+// listy filmów. Formularz powinien mieć walidacje uniemożliwiającą
+// wysłanie pustego formularza oraz komunikat po poprawnym dodaniu
+// filmu do listy. Po dodaniu filmu sekcja wyświetlająca liczbę
+// filmów powinna zostać zaktualizowana. Upewnij się że wszystkie
+// funkcjonalności działają również dla nowo dodanego filmu.
+
+
