@@ -130,9 +130,9 @@ function utworzKafelek(film) {
 function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
 			     slowoKluczowe = "wszystkie tagi") {
    
-    console.log(tabFilmow);
-    console.log("UtworzListeKafelkow - rok: " + rok);
-    console.log("UtworzListeKafelkow - slowoKluczowe: " + slowoKluczowe);
+    // console.log(tabFilmow);
+    // console.log("UtworzListeKafelkow - rok: " + rok);
+    // console.log("UtworzListeKafelkow - slowoKluczowe: " + slowoKluczowe);
     
     // tworzymy liste ktora bedziemy zapelniac elementami
     // ktore beda kafelkami
@@ -627,19 +627,19 @@ function sortujPoRoku() {
     }
 }
 
-let parSortujPoTytule = document.createElement("input");
-parSortujPoTytule.setAttribute("type", "button");
-parSortujPoTytule.value = "Sortuj po tytule";
-parSortujPoTytule.onclick = sortujPoTytule;
+let przyciskSortujPoTytule = document.createElement("input");
+przyciskSortujPoTytule.setAttribute("type", "button");
+przyciskSortujPoTytule.value = "Sortuj po tytule";
+przyciskSortujPoTytule.onclick = sortujPoTytule;
 
 
-let parSortujPoRoku = document.createElement("input");
-parSortujPoRoku.setAttribute("type", "button");
-parSortujPoRoku.value = "Sortuj po roku";
-parSortujPoRoku.onclick = sortujPoRoku;
+let przyciskSortujPoRoku = document.createElement("input");
+przyciskSortujPoRoku.setAttribute("type", "button");
+przyciskSortujPoRoku.value = "Sortuj po roku";
+przyciskSortujPoRoku.onclick = sortujPoRoku;
 
-output.insertBefore(parSortujPoTytule, listaSlow);
-output.insertBefore(parSortujPoRoku, listaSlow);
+output.insertBefore(przyciskSortujPoTytule, listaSlow);
+output.insertBefore(przyciskSortujPoRoku, listaSlow);
 
 
 // po filtrowaniu po tytule/roku filtrowanie przez tag nie dziala poprawnie
@@ -656,6 +656,34 @@ output.insertBefore(parSortujPoRoku, listaSlow);
 // filmu do listy. Po dodaniu filmu sekcja wyświetlająca liczbę
 // filmów powinna zostać zaktualizowana. Upewnij się że wszystkie
 // funkcjonalności działają również dla nowo dodanego filmu.
+
+let parNowaLinia = document.createElement("p");
+parNowaLinia.innerHTML = "</br>";
+
+let przyciskDodajFilm = document.createElement("input");
+przyciskDodajFilm.setAttribute("type", "button");
+przyciskDodajFilm.value = "Dodaj Nowy Film";
+
+
+let poleDodajRok = document.createElement("input");
+poleDodajRok.setAttribute("type", "text");
+poleDodajRok.setAttribute("placeholder", "Dodaj rok (max. 4 znaki)");
+poleDodajRok.setAttribute("size", "20");
+poleDodajRok.setAttribute("maxlength", "4"); 
+
+output.insertBefore(parNowaLinia, listaSlow);
+output.insertBefore(poleDodajRok, listaSlow);
+
+
+let poleDodajTytul = document.createElement("input");
+poleDodajTytul.setAttribute("type", "text");
+poleDodajTytul.setAttribute("placeholder", "Dodaj tytul (max. 50 znakow)");
+poleDodajTytul.setAttribute("size", "50");
+poleDodajTytul.setAttribute("maxlength", "50"); 
+
+output.insertBefore(poleDodajTytul, poleDodajRok);
+
+output.insertBefore(przyciskDodajFilm, listaSlow);
 
 
 
