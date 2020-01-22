@@ -26,11 +26,12 @@ ul {
 
 .inny_kolor {
     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
     padding: 16px;
     border-radius: 5px;
     background-color: lightblue;
     float: left;
+    opacity: 70%; 		/*przy zmianie trybu bedzie przepuszczal szare tlo*/
 }
 
 /* /\*  po najechaniu na inny_kolor sie powieksza *\/ */

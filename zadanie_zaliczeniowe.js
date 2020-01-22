@@ -130,6 +130,10 @@ function utworzKafelek(film) {
 function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
 			     slowoKluczowe = "wszystkie tagi") {
    
+    console.log(tabFilmow);
+    console.log("UtworzListeKafelkow - rok: " + rok);
+    console.log("UtworzListeKafelkow - slowoKluczowe: " + slowoKluczowe);
+    
     // tworzymy liste ktora bedziemy zapelniac elementami
     // ktore beda kafelkami
     let listaKafelkow = document.createElement("ul");
@@ -141,7 +145,7 @@ function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
     // i w tych div-ach osobno rok i tytul
 
     // jesli nie podano roku i slowa Kluczowego to wypisz wszystkie normalnie
-    if ((rok == "wszystkie lata") &&
+    if ((rok === "wszystkie lata") &&
 	(slowoKluczowe == "wszystkie tagi")) {
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
@@ -169,7 +173,7 @@ function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
 	    
 	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
 	    // jesli jest podany rok lub slowoKluczowe to po nim filtrujemy
-	    if (rok != "wszystkie lata") {   
+	    if (rok !== "wszystkie lata") {   
 		
 		// tworzymy element listy
 		let eltListy = document.createElement("li");
@@ -177,8 +181,8 @@ function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
 		let kafelek = utworzKafelek(tabFilmow[i]);
 
 		// filtrowanie po roku
-		// != bo getYear() zwraca rok jako string
-		if (rok != getYear(tabFilmow[i])) { 
+		// getYear() zwraca rok jako string
+		if (rok !== getYear(tabFilmow[i])) { 
 		    eltListy.hidden = true;
 		} else { 	
 		    // zmienamy (naprzemiennie) i 
@@ -200,15 +204,15 @@ function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
 		listaKafelkow.appendChild(eltListy);
 
 		// a jesli jest slowo kluczowe to po nim
-	    } else if (slowoKluczowe != "wszystkie tagi") { 
+	    } else if (slowoKluczowe !== "wszystkie tagi") { 
 		// tworzymy element listy
 		let eltListy = document.createElement("li");
 
 		let kafelek = utworzKafelek(tabFilmow[i]);
-
+		
 		// filtrowanie po roku
 		// != bo getYear() zwraca rok jako string
-		if (tytuly[i].toLocaleLowerCase().
+		if (getTitle(tabFilmow[i]).toLocaleLowerCase().
 		    indexOf(slowoKluczowe) === -1) { 
 		    eltListy.hidden = true;
 		} else { 	
@@ -469,6 +473,7 @@ let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapi
 // na razie dano 2 oddzielne filtrowania, a potem jak cos to to mozna zmienic
 function filtrujPoTagu() {
     let slowo = this.innerText;
+    console.log("kliknieto tag: " + slowo);
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
     output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", slowo));
@@ -637,6 +642,7 @@ output.insertBefore(parSortujPoTytule, listaSlow);
 output.insertBefore(parSortujPoRoku, listaSlow);
 
 
+// po filtrowaniu po tytule/roku filtrowanie przez tag nie dziala poprawnie
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -650,5 +656,6 @@ output.insertBefore(parSortujPoRoku, listaSlow);
 // filmu do listy. Po dodaniu filmu sekcja wyświetlająca liczbę
 // filmów powinna zostać zaktualizowana. Upewnij się że wszystkie
 // funkcjonalności działają również dla nowo dodanego filmu.
+
 
 
