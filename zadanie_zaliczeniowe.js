@@ -122,17 +122,19 @@ function utworzKafelek(film) {
     return kafelek;
 }
 
+
+// zmienna globalna przechowujaca aktualnie wybrany rok
+let wybranyRok = "wszystkie lata";
+
+// zmienna globalna przechowujaca wybrane tagi
+let wybranyTag = "wszystkie tagi";
+
 // zwraca element (ul)
 // z podelementami (li)
 // kazdy li to div.kafelek, a ten z kolei to 2 divy:
 // div.tytul
 // div.rok
-function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
-			     slowoKluczowe = "wszystkie tagi") {
-   
-    // console.log(tabFilmow);
-    // console.log("UtworzListeKafelkow - rok: " + rok);
-    // console.log("UtworzListeKafelkow - slowoKluczowe: " + slowoKluczowe);
+function utworzListeKafelkow(tabFilmow) {
     
     // tworzymy liste ktora bedziemy zapelniac elementami
     // ktore beda kafelkami
@@ -144,9 +146,12 @@ function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
     // w ktorym beda 2 divy z kafelkami
     // i w tych div-ach osobno rok i tytul
 
-    // jesli nie podano roku i slowa Kluczowego to wypisz wszystkie normalnie
-    if ((rok === "wszystkie lata") &&
-	(slowoKluczowe == "wszystkie tagi")) {
+    // jesli nie podano roku (wybranyRok === "wszystkie lata") 
+    // i nie podano slowa Kluczowego (wybrnyTag === "wszystkie tagi")
+    // to wypisz wszystkie normalnie
+    if ((wybranyRok === "wszystkie lata") &&
+	(wybranyTag == "wszystkie tagi")) {
+	console.log("bez filtrowania");
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
 	    // tworzymy element listy
@@ -168,75 +173,126 @@ function utworzListeKafelkow(tabFilmow, rok = "wszystkie lata",
 	    // na koniec toggle-ujemy kolor
 	    innyKolor = !innyKolor;
 	}
-    } else { // w przeciwnym przypadku trzeba cos ukryc
+    } else if (wybranyRok !== "wszystkie lata" &&
+	       wybranyTag === "wszystkie tagi") { 
+	// tu filtrujemy tylko po roku
+	console.log("filtrowanie po roku");
+
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
 	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
-	    // jesli jest podany rok lub slowoKluczowe to po nim filtrujemy
-	    if (rok !== "wszystkie lata") {   
-		
-		// tworzymy element listy
-		let eltListy = document.createElement("li");
 
-		let kafelek = utworzKafelek(tabFilmow[i]);
+	    // tworzymy element listy
+	    let eltListy = document.createElement("li");
 
-		// filtrowanie po roku
-		// getYear() zwraca rok jako string
-		if (rok !== getYear(tabFilmow[i])) { 
-		    eltListy.hidden = true;
-		} else { 	
-		    // zmienamy (naprzemiennie) i 
-		    // togglujemy kolor tylko dla widocznych kafelkow
+	    let kafelek = utworzKafelek(tabFilmow[i]);
 
-		    if (innyKolor) {
-			// co drugi bedzie mial inny kolor
-			kafelek.classList.add("inny_kolor");
-		    }
+	    // filtrowanie po roku
+	    // getYear() zwraca rok jako string
+	    if (wybranyRok !== getYear(tabFilmow[i])) { 
+		eltListy.hidden = true;
+	    } else { 	
+		// zmienamy (naprzemiennie) i 
+		// togglujemy kolor tylko dla widocznych kafelkow
+		// inaczej moze sie zdarzyc, 
+		// ze 2 kafelki pod rzad beda mialy ten sam kolor
 
-		    // toggle-ujemy kolor
-		    innyKolor = !innyKolor;
+		if (innyKolor) {
+		    // co drugi bedzie mial inny kolor
+		    kafelek.classList.add("inny_kolor");
 		}
 
-		// dodajemy kafelek do eleListy
-		eltListy.appendChild(kafelek);
-		
-		// dodaj eltListy do listyKafelkow
-		listaKafelkow.appendChild(eltListy);
-
-		// a jesli jest slowo kluczowe to po nim
-	    } else if (slowoKluczowe !== "wszystkie tagi") { 
-		// tworzymy element listy
-		let eltListy = document.createElement("li");
-
-		let kafelek = utworzKafelek(tabFilmow[i]);
-		
-		// filtrowanie po roku
-		// != bo getYear() zwraca rok jako string
-		if (getTitle(tabFilmow[i]).toLocaleLowerCase().
-		    indexOf(slowoKluczowe) === -1) { 
-		    eltListy.hidden = true;
-		} else { 	
-		    // zmienamy (naprzemiennie) i 
-		    // togglujemy kolor tylko dla widocznych kafelkow
-
-		    if (innyKolor) {
-			// co drugi bedzie mial inny kolor
-			kafelek.classList.add("inny_kolor");
-		    }
-
-		    // toggle-ujemy kolor
-		    innyKolor = !innyKolor;
-		}
-
-		// dodajemy kafelek do eleListy
-		eltListy.appendChild(kafelek);
-		
-		// dodaj eltListy do listyKafelkow
-		listaKafelkow.appendChild(eltListy);
-		
+		// toggle-ujemy kolor
+		innyKolor = !innyKolor;
 	    }
+
+	    // dodajemy kafelek do eleListy
+	    eltListy.appendChild(kafelek);
+	    
+	    // dodaj eltListy do listyKafelkow
+	    listaKafelkow.appendChild(eltListy);
+	    
 	}
-	
+    } else if (wybranyRok === "wszystkie lata" &&
+	       wybranyTag !== "wszystkie tagi") {
+	// tu filtrujemy tylko po tagu
+	console.log("filtrowanie po tagu");
+
+	for (let i = 0; i < tabFilmow.length; i++) {
+	    
+	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
+
+	    // tworzymy element listy
+	    let eltListy = document.createElement("li");
+
+	    let kafelek = utworzKafelek(tabFilmow[i]);
+
+	    // filtrowanie po roku
+	    // -1 oznacza ze danego tagu/slowa nie ma w tytule filmu
+	    if (getTitle(tabFilmow[i]).toLowerCase().indexOf(wybranyTag) === -1) { 
+		eltListy.hidden = true;
+	    } else { 	
+		// zmienamy (naprzemiennie) i 
+		// togglujemy kolor tylko dla widocznych kafelkow
+		// inaczej moze sie zdarzyc, 
+		// ze 2 kafelki pod rzad beda mialy ten sam kolor
+
+		if (innyKolor) {
+		    // co drugi bedzie mial inny kolor
+		    kafelek.classList.add("inny_kolor");
+		}
+
+		// toggle-ujemy kolor
+		innyKolor = !innyKolor;
+	    }
+
+	    // dodajemy kafelek do eleListy
+	    eltListy.appendChild(kafelek);
+	    
+	    // dodaj eltListy do listyKafelkow
+	    listaKafelkow.appendChild(eltListy);
+	    
+	}
+    } else {
+	// tu filtrujemy i po roku i po tagu
+	console.log("filtrowanie po roku i tagu");
+
+	for (let i = 0; i < tabFilmow.length; i++) {
+	    
+	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
+
+	    // tworzymy element listy
+	    let eltListy = document.createElement("li");
+
+	    let kafelek = utworzKafelek(tabFilmow[i]);
+
+	    // filtrowanie po roku
+	    // -1 oznacza ze danego tagu/slowa nie ma w tytule filmu
+	    if (getTitle(tabFilmow[i]).toLowerCase().indexOf(wybranyTag) === -1 ||
+	       getYear(tabFilmow[i]) !== wybranyRok) { 
+		eltListy.hidden = true;
+	    } else { 	
+		// zmienamy (naprzemiennie) i 
+		// togglujemy kolor tylko dla widocznych kafelkow
+		// inaczej moze sie zdarzyc, 
+		// ze 2 kafelki pod rzad beda mialy ten sam kolor
+
+		if (innyKolor) {
+		    // co drugi bedzie mial inny kolor
+		    kafelek.classList.add("inny_kolor");
+		}
+
+		// toggle-ujemy kolor
+		innyKolor = !innyKolor;
+	    }
+
+	    // dodajemy kafelek do eleListy
+	    eltListy.appendChild(kafelek);
+	    
+	    // dodaj eltListy do listyKafelkow
+	    listaKafelkow.appendChild(eltListy);
+	    
+	}
     }
 
     return listaKafelkow; 	// zwraca UL kafelkow
@@ -292,10 +348,10 @@ function usunListeKafelkow() {
 }
 
 function filtrujRok() {
-    let wybrRok = this.innerHTML;
+    wybranyRok = this.innerHTML;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies, wybrRok, "wszystkie tagi"));
+    output.appendChild(utworzListeKafelkow(listOfMovies));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
@@ -311,6 +367,7 @@ for (let i = 0; i < unikalnePremiery.length; i++) {
     opcja.onclick = filtrujRok;
     select.appendChild(opcja);
 }
+
 
 // oprocz selecta
 // dodamy tez guzik pokaz wszystkie filmy (aby resetowac)
@@ -458,6 +515,8 @@ function zwrocRozmCzcionki(liczbaWyst) {
 unikalneSlowa.unshift("wszystkie tagi");
 liczbWystSlowa.unshift(4); 	// da to czcionke = 20px
 
+
+
 let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
 
 
@@ -472,11 +531,19 @@ let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapi
 // AND w stosunku do filtrowania po roku?
 // na razie dano 2 oddzielne filtrowania, a potem jak cos to to mozna zmienic
 function filtrujPoTagu() {
-    let slowo = this.innerText;
-    console.log("kliknieto tag: " + slowo);
+    
+    // usuniecie podswietlenia z tagu
+    let listaTagow = document.querySelectorAll("ol > li");
+    for (let i = 0; i < listaTagow.length; i++) {
+	listaTagow[i].style.backgroundColor = "";
+    }
+    // wstawienie podswietlenia na aktualnie wybrany tag
+    this.style.backgroundColor = "gold";
+
+    wybranyTag = this.innerText;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", slowo));
+    output.appendChild(utworzListeKafelkow(listOfMovies));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
@@ -494,6 +561,7 @@ for (let i = 0; i < unikalneSlowa.length; i++) {
     // tagowi "wszystkie dla odroznienia damy zielony kolor"
     if (unikalneSlowa[i] == "wszystkie tagi") {
 	eltListy.style.color = "green";
+	eltListy.style.backgroundColor = "gold";
     }
     eltListy.innerHTML = unikalneSlowa[i];
     listaSlow.appendChild(eltListy);
@@ -574,7 +642,7 @@ function sortujPoTytule() {
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
-	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
 	updateFilmyIwidoczne();
@@ -586,7 +654,7 @@ function sortujPoTytule() {
 
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
-	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
 	updateFilmyIwidoczne();
@@ -606,7 +674,7 @@ function sortujPoRoku() {
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
-	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
 	updateFilmyIwidoczne();
@@ -618,7 +686,7 @@ function sortujPoRoku() {
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
-	output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
 	updateFilmyIwidoczne();
@@ -743,7 +811,7 @@ function dodajFilm() {
 
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+    output.appendChild(utworzListeKafelkow(listOfMovies));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
