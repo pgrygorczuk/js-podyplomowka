@@ -9,7 +9,6 @@ ul {
     border-radius: 5px;
     float: left;
     background-color: white;
-    opacity: 70%; 		/*przy zmianie trybu bedzie przepuszczal szare tlo*/
 }
 
 /*  po najechaniu na kafelek sie powieksza */
@@ -31,7 +30,6 @@ ul {
     border-radius: 5px;
     background-color: lightblue;
     float: left;
-    opacity: 70%; 		/*przy zmianie trybu bedzie przepuszczal szare tlo*/
 }
 
 /* /\*  po najechaniu na inny_kolor sie powieksza *\/ */
@@ -56,7 +54,7 @@ ol > li {
 }
 
 
-/* slider - tryb nocny/dzienny za */
+/* slider - tryb nocny/dzienny za: */
 /* https://www.w3schools.com/howto/howto_css_switch.asp */
 /* minimalnie zmodyfikowane */
 
@@ -83,6 +81,7 @@ ol > li {
   left: 0;
   right: 0;
   bottom: 0;
+  /* zamiana na zloty kolor dla dnia */
   background-color: #ffd700;
   -webkit-transition: .4s;
   transition: .4s;
@@ -101,6 +100,7 @@ ol > li {
 }
 
 input:checked + .slider {
+    /* zamiana koloru na granatowy dla nocy */
   background-color: #000080;
 }
 
@@ -128,5 +128,25 @@ p.tryb {
 }
 
 .tryb_nocny {
+    /* kolor srebrny */
+    background-color: #c0c0c0;
+}
+
+
+.tryb_nocny .kafelek {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
+    padding: 16px;
+    border-radius: 5px;
+    float: left;
     background-color: lightgray;
+}
+
+.tryb_nocny .inny_kolor {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
+    padding: 16px;
+    border-radius: 5px;
+    background-color: #1e88e5;
+    float: left;
 }
