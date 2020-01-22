@@ -584,12 +584,16 @@ output.insertBefore(listaSlow, listaKafelkow);
 // przełącznika przywróci tryb dzienny.
 
 // // dodajemy przycisk w html
-let parTrybDzienny = document.createElement("p");
-parTrybDzienny.classList.add("tryb");
-parTrybDzienny.innerHTML = "Tryb dzienny &nbsp;";
+let imgTrybDzienny = document.createElement("img");
+imgTrybDzienny.setAttribute("src", "./sun.svg");
+imgTrybDzienny.setAttribute("alt", "Tryb dzienny");
+
+let imgTrybNocny = document.createElement("img");
+imgTrybNocny.setAttribute("src", "./moon.svg");
+imgTrybNocny.setAttribute("alt", "Tryb nocny");
 let parTrybNocny = document.createElement("p");
-parTrybNocny.classList.add("tryb");
-parTrybNocny.innerHTML = "&nbsp;Tryb nocny </br> </br>";
+parTrybNocny.innerHTML = "</br>";
+// do zastanowienia czy by wiecej nie ostylowac w css-ie zamiast dodawac puste paragrafy
 
 let przyciskDzienNoc = document.createElement("label");
 przyciskDzienNoc.classList.add("switch");
@@ -619,7 +623,7 @@ function zmienTryb() {
 
 przyciskDzienNoc.onclick = zmienTryb;
 
-output.prepend(parTrybDzienny, przyciskDzienNoc, parTrybNocny);
+output.prepend(imgTrybDzienny, przyciskDzienNoc, imgTrybNocny, parTrybNocny);
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -805,7 +809,8 @@ function dodajFilm() {
 	listOfMovies.push(filmDoDodania);
 	
 	// wyswietlenie wiadomosci o dodaniu filmu
-	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie zakonczono dodawanie filmu";
+	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie dodawano film do " +
+	    "konca listy filmow";
 	parWalidacjaDodanegoFilmu.style.color = "green";
 	
 

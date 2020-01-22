@@ -150,3 +150,12 @@ p.tryb {
     background-color: #1e88e5;
     float: left;
 }
+
+/* wyglad do obrazkow zrobionych przeze mnie w InkScape (slonce i ksiezyc) */
+img {
+    position: relative;
+    top: 15px;
+    padding: 5px;
+    height: 60px;
+    width: 60px;
+}
