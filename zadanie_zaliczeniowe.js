@@ -657,13 +657,10 @@ output.insertBefore(przyciskSortujPoRoku, listaSlow);
 // filmów powinna zostać zaktualizowana. Upewnij się że wszystkie
 // funkcjonalności działają również dla nowo dodanego filmu.
 
-let parNowaLinia = document.createElement("p");
-parNowaLinia.innerHTML = "</br>";
 
-let przyciskDodajFilm = document.createElement("input");
-przyciskDodajFilm.setAttribute("type", "button");
-przyciskDodajFilm.value = "Dodaj Nowy Film";
 
+let parWalidacjaDodanegoFilmu = document.createElement("p");
+parWalidacjaDodanegoFilmu.style.color = "red";
 
 let poleDodajRok = document.createElement("input");
 poleDodajRok.setAttribute("type", "text");
@@ -671,7 +668,9 @@ poleDodajRok.setAttribute("placeholder", "Dodaj rok (max. 4 znaki)");
 poleDodajRok.setAttribute("size", "20");
 poleDodajRok.setAttribute("maxlength", "4"); 
 
-output.insertBefore(parNowaLinia, listaSlow);
+
+output.insertBefore(parWalidacjaDodanegoFilmu, listaSlow);
+
 output.insertBefore(poleDodajRok, listaSlow);
 
 
@@ -681,8 +680,86 @@ poleDodajTytul.setAttribute("placeholder", "Dodaj tytul (max. 50 znakow)");
 poleDodajTytul.setAttribute("size", "50");
 poleDodajTytul.setAttribute("maxlength", "50"); 
 
-output.insertBefore(poleDodajTytul, poleDodajRok);
+function czyCzteryCyfry(tekst) {
+    let czySameCyfry = true;
+    for (let i = 0; i < tekst.length; i++) {
+	if (tekst[i] >= "0" && tekst[i] <= "9") {
+	    // nie rob nic (odpowiedz juz jest true)
+	} else {
+	    return false;
+	}
+    }
+    return czySameCyfry;
+}
 
+function weryfikujFilm() {
+    
+    let czyOk = true;
+
+    // + 1900 bo:
+    // https://www.tutorialspoint.com/javascript/date_getyear.htm
+    let aktualny_rok = new Date().getYear() + 1900;
+    // wg. https://en.wikipedia.org/wiki/Film najstarszy znany film pochodzi z 1888
+    
+    // dodanie koloru czerwonego do czcionki z ostrzezeniem
+    parWalidacjaDodanegoFilmu.style.color = "red";
+
+    if (poleDodajTytul.value === "") {
+	parWalidacjaDodanegoFilmu.innerHTML = "Pole 'dodaj tytul filmu' nie moze byc puste!";
+	czyOk = false;
+    }
+    if (poleDodajRok.value === "") {
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' nie moze byc puste!";
+	czyOk = false;
+    } else if (!czyCzteryCyfry(poleDodajRok.value)) {
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierac 4 cyfry";
+	czyOk = false;
+    } else if (poleDodajRok.value <= 1888 || 
+	       poleDodajRok.value >= aktualny_rok) {
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierac wartosc" +
+	    "  pomiedzy rokiem 1888 a rokiem bierzacym";
+	czyOk = false;
+    }
+    return czyOk;
+}
+
+
+function dodajFilm() {
+    
+    parWalidacjaDodanegoFilmu.innerHTML = ""; // resetowanie pola jesli tam wczesniej bylo cos wpisane
+    
+    let filmDoDodania = "";
+    
+    // weryfikacja dodanego filmu
+    if (weryfikujFilm()){
+	// dodanie zweryfikowanego filmu na koniec listy filmow
+	filmDoDodania += poleDodajTytul.value + " (" + poleDodajRok.value + ")";
+	listOfMovies.push(filmDoDodania);
+	
+	// wyswietlenie wiadomosci o dodaniu filmu
+	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie zakonczono dodawanie filmu";
+	parWalidacjaDodanegoFilmu.style.color = "green";
+	
+
+    usunListeKafelkow(); 	// usuwa liste kafelkow
+    // a teraz ja odtwarza
+    output.appendChild(utworzListeKafelkow(listOfMovies, "wszystkie lata", "wszystkie tagi"));
+    
+    // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+    updateFilmyIwidoczne();
+    wyswietlFilmyIwidoczne();
+    }
+    
+    
+}
+
+let przyciskDodajFilm = document.createElement("input");
+przyciskDodajFilm.setAttribute("type", "button");
+przyciskDodajFilm.value = "Dodaj Nowy Film";
+przyciskDodajFilm.onclick = dodajFilm;
+
+
+output.insertBefore(poleDodajTytul, poleDodajRok);
 output.insertBefore(przyciskDodajFilm, listaSlow);
 
 
