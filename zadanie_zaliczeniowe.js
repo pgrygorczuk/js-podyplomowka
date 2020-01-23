@@ -334,13 +334,6 @@ function getUniqueYears(tabFilmow) {
     return unikalneLata;
 }
 
-let unikalnePremiery = getUniqueYears(listOfMovies);
-// sortujemy rosnaca
-// (sort robi to inplace wiec nie trzeba tego ponownie przypisywac)
-unikalnePremiery.sort((a, b) => parseInt(a) - parseInt(b));
-
-// dodamy opje do selekta typu "wszystkie lata"
-unikalnePremiery.unshift("wszystkie lata"); // dodajemy z przodu listy
 
 function usunListeKafelkow() {
     let listaKafelkow = document.getElementsByTagName("ul")[0]; // jest tylko 1 ul (elt 0) w dokumencie
@@ -360,13 +353,35 @@ function filtrujRok() {
 
 let select = document.createElement("select");
 
-// zapelniamy select wartosciami
-for (let i = 0; i < unikalnePremiery.length; i++) {
-    let opcja = document.createElement("option");
-    opcja.innerHTML = unikalnePremiery[i];
-    opcja.onclick = filtrujRok;
-    select.appendChild(opcja);
+// funkcja updateuje (przebudowuje) selecta na podstawie aktualnej zawartosci bazyfilmow
+function updateSelectRok() {
+
+    let unikalnePremiery = getUniqueYears(listOfMovies);
+    // sortujemy rosnaca
+    // (sort robi to inplace wiec nie trzeba tego ponownie przypisywac)
+    unikalnePremiery.sort((a, b) => parseInt(a) - parseInt(b));
+    
+    // dodamy opje do selekta typu "wszystkie lata"
+    unikalnePremiery.unshift("wszystkie lata"); // dodajemy z przodu listy
+
+    // usuwamy stare wartosci z select-a
+    let ostatniaOpcja = select.lastElementChild;
+    while(ostatniaOpcja){
+	select.removeChild(ostatniaOpcja);
+	ostatniaOpcja = select.lastElementChild;
+    }
+    
+    // zapelniamy select nowymi wartosciami
+    for (let i = 0; i < unikalnePremiery.length; i++) {
+	let opcja = document.createElement("option");
+	opcja.innerHTML = unikalnePremiery[i];
+	opcja.onclick = filtrujRok;
+	select.appendChild(opcja);
+    }
+    
 }
+
+updateSelectRok();
 
 
 // oprocz selecta
