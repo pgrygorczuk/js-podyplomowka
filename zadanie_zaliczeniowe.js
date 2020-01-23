@@ -41,7 +41,6 @@ const listOfMovies = [
     'Panna Nikt (2010)',
     'Panna Julia (1951)'
 ];
-let tytuly = listOfMovies.map((film) => getTitle(film));
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -463,22 +462,30 @@ function wyswietlFilmyIwidoczne() {
 // (wielkie i małe znaki traktuj jednakowo). 
 // Słowa uporządkuj alfabetycznie.
 
-// zwraca tablice slow pisanych malymi literami
+// zwraca tablice slow pisanych malymi literami z 1 tytulu (string bez roku)
+// slowa moga sie powtarzac
 function getSlowa(tytul) {
     let slowa = tytul.split(" "); // slowa sa oddzielone spacjami
     slowa = slowa.map((slowo) => slowo.toLocaleLowerCase());
     return slowa;
 }
 
-
-let slowa = [];
-for (let i = 0; i < tytuly.length; i++) {
-    let zJednegoTytulu = getSlowa(tytuly[i]);
-    for (let j = 0; j < zJednegoTytulu.length; j++) {
-	slowa.push(zJednegoTytulu[j]);
+// zwraca liste slow (array stringow) z arrayu tytuly
+// (array stringow, tj. tytulow bez roku)
+// slowa moga sie powtarzac
+function zwrocSlowaZtytulow(tytuly) {
+    let slowa = [];
+    for (let i = 0; i < tytuly.length; i++) {
+	let zJednegoTytulu = getSlowa(tytuly[i]);
+	for (let j = 0; j < zJednegoTytulu.length; j++) {
+	    slowa.push(zJednegoTytulu[j]);
+	}
     }
+    return slowa;
 }
 
+// zwraca liste unikalnych slow (array) 
+// z array-u slowa (moze zawierac powtarzajace sie slowa)
 function getUniqueWords(slowa) {
     
     let unikalneSlowa = [];
@@ -492,16 +499,9 @@ function getUniqueWords(slowa) {
     return unikalneSlowa;
 }
 
-let unikalneSlowa = getUniqueWords(slowa);
-// nie bylo czy sortowac rosnaco, czy malejaco
-unikalneSlowa = unikalneSlowa.sort((a, b) => a.localeCompare(b));
-let liczbWystSlowa = [];
 
-for (let i = 0; i < unikalneSlowa.length; i++) {
-    let tmp = slowa.filter((slowo) => slowo == unikalneSlowa[i]);
-    liczbWystSlowa.push(tmp.length);
-}
-
+// przyjmuje liczbaWyst (integer) i zwraca string
+// z wielkoscia, czyli cyfry+litery, np. "12px"
 function zwrocRozmCzcionki(liczbaWyst) {
     let wynik = "";
 
@@ -524,16 +524,41 @@ function zwrocRozmCzcionki(liczbaWyst) {
     return wynik;
 }
 
-// dodamy na poczatku ten tag "wszystkie tagi" do wyswietlanie wszystkich filmow
-// lepiej wygladalby przycisk (tak jak ja to zrobilem przy latach)
-// no ale zadanie to zadanie
-unikalneSlowa.unshift("wszystkie tagi");
-liczbWystSlowa.unshift(4); 	// da to czcionke = 20px
 
 
+// zwraca tabele tabel
+// [0] - tabela unikalnych slow posortowanych alfabetycznie
+// [1] - tabela wielkosci slow w pixelach w formacie ("12px")
+function zwrocUnikSlowaIwielkCzcionek() {
+    
+    let wszyskieTytuly = listOfMovies.map((film) => getTitle(film));
+    let wszystkieSlowaZtytulow = zwrocSlowaZtytulow(wszyskieTytuly);
+    let unikalneSlowa = getUniqueWords(wszystkieSlowaZtytulow);
 
-let rozmCzcionki = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
+    // nie bylo czy sortowac rosnaco, czy malejaco
+    unikalneSlowa = unikalneSlowa.sort((a, b) => a.localeCompare(b));
+    
+    //liczymy liczbe wystapien slowa
+    let liczbWystSlowa = [];
 
+    for (let i = 0; i < unikalneSlowa.length; i++) {
+	// tmp - zawiera dane unikalne slowo powtorzone tyle razy 
+	// ile wystapilo w tytulach, np. ["ala", "ala", "ala"], czy ["kot"]
+	let tmp = wszystkieSlowaZtytulow.filter((slowo) => slowo == unikalneSlowa[i]);
+	liczbWystSlowa.push(tmp.length);
+    }
+    
+    // dodamy na poczatku ten tag "wszystkie tagi" do wyswietlanie wszystkich filmow
+    // lepiej wygladalby przycisk (tak jak ja to zrobilem przy latach)
+    // no ale zadanie to zadanie
+    unikalneSlowa.unshift("wszystkie tagi");
+    liczbWystSlowa.unshift(4); 	// da to czcionke = 20px
+   
+    // obliczmy wielkosci czcionek
+    let wielkosciCzcionek = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
+
+    return [unikalneSlowa, wielkosciCzcionek];
+}
 
 
 // Kliknięcie w tag powoduje odfiltrowanie filmów - 
@@ -566,25 +591,44 @@ function filtrujPoTagu() {
 }
 
 
+// lista w ktorej wypiszemy tagi
+// aby uniknac konfliktu z ul (kafelki) uzyjemy ol
 let listaSlow = document.createElement("ol");
 
-// i teraz for-em wprowadzam inne slowa
-for (let i = 0; i < unikalneSlowa.length; i++) {
-    let eltListy = document.createElement("li");
-    eltListy.onclick = filtrujPoTagu;
-    eltListy.style.fontSize = rozmCzcionki[i];
-    // tagowi "wszystkie dla odroznienia damy zielony kolor"
-    if (unikalneSlowa[i] == "wszystkie tagi") {
-	eltListy.style.color = "green";
-	eltListy.style.backgroundColor = "gold";
+function updateListaTagow() {
+    
+    let ostatniaOpcja = listaSlow.lastElementChild;
+    while(ostatniaOpcja){
+	listaSlow.removeChild(ostatniaOpcja);
+	ostatniaOpcja = listaSlow.lastElementChild;
     }
-    eltListy.innerHTML = unikalneSlowa[i];
-    listaSlow.appendChild(eltListy);
+    
+    let tabeleSlowaWielkosci = zwrocUnikSlowaIwielkCzcionek();
+    let unikalneSlowa = tabeleSlowaWielkosci[0];
+    let rozmCzcionki = tabeleSlowaWielkosci[1];
+
+    // i teraz for-em wprowadzam inne slowa
+    for (let i = 0; i < unikalneSlowa.length; i++) {
+	let eltListy = document.createElement("li");
+	eltListy.onclick = filtrujPoTagu;
+	eltListy.style.fontSize = rozmCzcionki[i];
+	// tagowi "wszystkie dla odroznienia damy zielony kolor"
+	if (unikalneSlowa[i] == "wszystkie tagi") {
+	    eltListy.style.color = "green";
+	    eltListy.style.backgroundColor = "gold";
+	}
+	eltListy.innerHTML = unikalneSlowa[i];
+	listaSlow.appendChild(eltListy);
+    }
+    
+    // umieszczenie listy slow wykrzacza filtrowanie, a moze i cos jeszcze
+    // uzyc gdzies querySelector() aby byc dokladniejszym
+    output.insertBefore(listaSlow, listaKafelkow);
 }
 
-// umieszczenie listy slow wykrzacza filtrowanie, a moze i cos jeszcze
-// uzyc gdzies querySelector() aby byc dokladniejszym
-output.insertBefore(listaSlow, listaKafelkow);
+
+updateListaTagow();
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -729,9 +773,6 @@ output.insertBefore(przyciskSortujPoTytule, listaSlow);
 output.insertBefore(przyciskSortujPoRoku, listaSlow);
 
 
-// po filtrowaniu po tytule/roku filtrowanie przez tag nie dziala poprawnie
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //                              zadanie (part 8)                             //
 ///////////////////////////////////////////////////////////////////////////////
@@ -869,6 +910,4 @@ przyciskDodajFilm.onclick = dodajFilm;
 
 output.insertBefore(poleDodajTytul, poleDodajRok);
 output.insertBefore(przyciskDodajFilm, listaSlow);
-
-
 
