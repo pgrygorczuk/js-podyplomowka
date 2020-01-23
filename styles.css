@@ -64,6 +64,7 @@ ol > li {
   display: inline-block;
   width: 60px;
   height: 34px;
+  bottom: 15px; /*zmieniono pozycje slidera aby lepiej pasowal do poziomu ikonek slonca i ksiezyca*/
 }
 
 /* Hide default HTML checkbox */
