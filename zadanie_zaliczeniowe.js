@@ -229,7 +229,7 @@ function utworzListeKafelkow(tabFilmow) {
 
 	    // filtrowanie po roku
 	    // -1 oznacza ze danego tagu/slowa nie ma w tytule filmu
-	    if (getTitle(tabFilmow[i]).toLowerCase().indexOf(wybranyTag) === -1) { 
+	    if (getTitle(tabFilmow[i]).toLocaleLowerCase().indexOf(wybranyTag) === -1) { 
 		eltListy.hidden = true;
 	    } else { 	
 		// zmienamy (naprzemiennie) i 
@@ -268,7 +268,7 @@ function utworzListeKafelkow(tabFilmow) {
 
 	    // filtrowanie po roku
 	    // -1 oznacza ze danego tagu/slowa nie ma w tytule filmu
-	    if (getTitle(tabFilmow[i]).toLowerCase().indexOf(wybranyTag) === -1 ||
+	    if (getTitle(tabFilmow[i]).toLocaleLowerCase().indexOf(wybranyTag) === -1 ||
 	       getYear(tabFilmow[i]) !== wybranyRok) { 
 		eltListy.hidden = true;
 	    } else { 	
@@ -451,7 +451,7 @@ function wyswietlFilmyIwidoczne() {
 // zwraca tablice slow pisanych malymi literami
 function getSlowa(tytul) {
     let slowa = tytul.split(" "); // slowa sa oddzielone spacjami
-    slowa = slowa.map((slowo) => slowo.toLowerCase());
+    slowa = slowa.map((slowo) => slowo.toLocaleLowerCase());
     return slowa;
 }
 
@@ -764,6 +764,22 @@ function czyCzteryCyfry(tekst) {
     return czySameCyfry;
 }
 
+// przyjmuje 2 stringi tytul i rok i sprawdza czy film jest juz w bazie filmow
+function czyFilmJestWbazie(tytul, rok) {
+
+    let czyWbazie = false;
+    
+    let pelenTytul = tytul + " (" + rok + ")";
+   
+    for (let i = 0; i < listOfMovies.length; i++) {
+	if(listOfMovies[i].toLocaleLowerCase() === pelenTytul.toLocaleLowerCase()) {
+	    return true;
+	}
+    }
+
+    return czyWbazie;
+}
+
 function weryfikujFilm() {
     
     let czyOk = true;
@@ -791,9 +807,13 @@ function weryfikujFilm() {
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierac wartosc" +
 	    "  pomiedzy rokiem 1888 a rokiem bierzacym";
 	czyOk = false;
+    } else if (czyFilmJestWbazie(poleDodajTytul.value, poleDodajRok.value)) {
+	parWalidacjaDodanegoFilmu.innerHTML = "Podany film znajduje sie juz w bazie";
+	czyOk = false;
     }
     return czyOk;
 }
+
 
 
 function dodajFilm() {
