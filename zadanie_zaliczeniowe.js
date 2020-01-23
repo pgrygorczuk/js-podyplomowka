@@ -594,6 +594,7 @@ function filtrujPoTagu() {
 // lista w ktorej wypiszemy tagi
 // aby uniknac konfliktu z ul (kafelki) uzyjemy ol
 let listaSlow = document.createElement("ol");
+output.insertBefore(listaSlow, listaKafelkow);
 
 function updateListaTagow() {
     
@@ -620,10 +621,8 @@ function updateListaTagow() {
 	eltListy.innerHTML = unikalneSlowa[i];
 	listaSlow.appendChild(eltListy);
     }
-    
     // umieszczenie listy slow wykrzacza filtrowanie, a moze i cos jeszcze
     // uzyc gdzies querySelector() aby byc dokladniejszym
-    output.insertBefore(listaSlow, listaKafelkow);
 }
 
 
@@ -890,13 +889,16 @@ function dodajFilm() {
 	parWalidacjaDodanegoFilmu.style.color = "green";
 	
 
-    usunListeKafelkow(); 	// usuwa liste kafelkow
-    // a teraz ja odtwarza
-    output.appendChild(utworzListeKafelkow(listOfMovies));
-    
-    // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-    updateFilmyIwidoczne();
-    wyswietlFilmyIwidoczne();
+	usunListeKafelkow(); 	// usuwa liste kafelkow
+	// a teraz ja odtwarza
+	output.appendChild(utworzListeKafelkow(listOfMovies));
+	
+	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
+	updateFilmyIwidoczne();
+	wyswietlFilmyIwidoczne();
+	
+	// update listyTagow
+	updateListaTagow();
     }
     
     
