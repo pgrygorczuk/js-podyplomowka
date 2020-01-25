@@ -150,7 +150,6 @@ function utworzListeKafelkow(tabFilmow) {
     // to wypisz wszystkie normalnie
     if ((wybranyRok === "wszystkie lata") &&
 	(wybranyTag == "wszystkie tagi")) {
-	console.log("bez filtrowania");
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
 	    // tworzymy element listy
@@ -175,7 +174,6 @@ function utworzListeKafelkow(tabFilmow) {
     } else if (wybranyRok !== "wszystkie lata" &&
 	       wybranyTag === "wszystkie tagi") { 
 	// tu filtrujemy tylko po roku
-	console.log("filtrowanie po roku");
 
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
@@ -215,7 +213,6 @@ function utworzListeKafelkow(tabFilmow) {
     } else if (wybranyRok === "wszystkie lata" &&
 	       wybranyTag !== "wszystkie tagi") {
 	// tu filtrujemy tylko po tagu
-	console.log("filtrowanie po tagu");
 
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
@@ -254,7 +251,6 @@ function utworzListeKafelkow(tabFilmow) {
 	}
     } else {
 	// tu filtrujemy i po roku i po tagu
-	console.log("filtrowanie po roku i tagu");
 
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
@@ -375,6 +371,9 @@ function updateSelectRok() {
 	let opcja = document.createElement("option");
 	opcja.innerHTML = unikalnePremiery[i];
 	opcja.onclick = filtrujRok;
+	if (opcja.innerHTML === wybranyRok){
+	    opcja.selected = true;
+	}
 	select.appendChild(opcja);
     }
     
@@ -624,8 +623,8 @@ function updateListaTagow() {
 	eltListy.innerHTML = unikalneSlowa[i];
 	listaSlow.appendChild(eltListy);
     }
-    // umieszczenie listy slow wykrzacza filtrowanie, a moze i cos jeszcze
-    // uzyc gdzies querySelector() aby byc dokladniejszym
+    
+    updateSelectRok();
 }
 
 
@@ -860,8 +859,8 @@ function weryfikujFilm() {
     } else if (!czyCzteryCyfry(poleDodajRok.value)) {
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierac 4 cyfry";
 	czyOk = false;
-    } else if (poleDodajRok.value <= 1888 || 
-	       poleDodajRok.value >= aktualny_rok) {
+    } else if (poleDodajRok.value < 1888 || 
+	       poleDodajRok.value > aktualny_rok) {
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierac wartosc" +
 	    "  pomiedzy rokiem 1888 a rokiem bierzacym";
 	czyOk = false;
