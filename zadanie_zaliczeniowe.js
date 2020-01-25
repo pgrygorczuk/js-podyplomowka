@@ -616,6 +616,9 @@ function updateListaTagow() {
 	// tagowi "wszystkie dla odroznienia damy zielony kolor"
 	if (unikalneSlowa[i] == "wszystkie tagi") {
 	    eltListy.style.color = "green";
+	}
+	// zachowujemy podswietlenie tagu ktory byl ostatnio wybrany
+	if (unikalneSlowa[i] == wybranyTag){
 	    eltListy.style.backgroundColor = "gold";
 	}
 	eltListy.innerHTML = unikalneSlowa[i];
