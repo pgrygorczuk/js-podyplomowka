@@ -128,11 +128,28 @@ let wybranyRok = "wszystkie lata";
 // zmienna globalna przechowujaca wybrane tagi
 let wybranyTag = "wszystkie tagi";
 
+
+// funkcja czyWszystkieUkryte
+// potrzebna aby wyswietlic info o braku rekordow (kafelkow) do wyswietlenia
+// tj. spelniajacych kryteria danego filtrowania
+function czyWszystkieUkryte() {
+    let kafelkiWdokumencie = document.querySelectorAll("ul > li");
+    for (let i = 0; i < kafelkiWdokumencie.length; i++) {
+	if (kafelkiWdokumencie[i].hidden !== true) {
+	    return false;
+	}
+    }
+    return true;
+}
+
 // zwraca element (ul)
 // z podelementami (li)
 // kazdy li to div.kafelek, a ten z kolei to 2 divy:
 // div.tytul
 // div.rok
+// funkcja troche dluga (choc chyba w miare klarowna)
+// niemniej jednak moznaby sie zastanowic nad skroceniem
+// (usuniecie duplikcaji kodu, danie podfunkcji)
 function utworzListeKafelkow(tabFilmow) {
     
     // tworzymy liste ktora bedziemy zapelniac elementami
@@ -295,7 +312,10 @@ function utworzListeKafelkow(tabFilmow) {
 
 let listaKafelkow = utworzListeKafelkow(listOfMovies);
 output.appendChild(listaKafelkow);
-
+// ponizsze potrzebne aby wyswietlac monit o braku wynikow do wyswietlenia przy filtrowaniu
+let infoBrakWynikowDoWyswietlenia = document.createElement("p");
+infoBrakWynikowDoWyswietlenia.style.color = "red";
+output.appendChild(infoBrakWynikowDoWyswietlenia);
 
 updateFilmyIwidoczne();
 wyswietlFilmyIwidoczne();
@@ -344,6 +364,16 @@ function filtrujRok() {
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
     wyswietlFilmyIwidoczne();
+    
+    // sprawdza czy wszystkie kafelki sa ukryte
+    // jesli tak wyswietla info
+    if (czyWszystkieUkryte()) {
+	console.log("brak wynikow do wyswietlenia");
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmow spelniajacych kryteria wyszukiwania" + 
+	    "</br>Wybierz inne parametry filtrowania";
+    } else {
+	infoBrakWynikowDoWyswietlenia.innerHTML = "";
+    }
 }
 
 let select = document.createElement("select");
@@ -587,6 +617,16 @@ function filtrujPoTagu() {
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
     updateFilmyIwidoczne();
     wyswietlFilmyIwidoczne();
+    
+    // sprawdza czy wszystkie kafelki sa ukryte
+    // jesli tak wyswietla info
+    if (czyWszystkieUkryte()) {
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmow spelniajacych kryteria wyszukiwania" + 
+	    "</br>Wybierz inne parametry filtrowania";
+    } else {
+	infoBrakWynikowDoWyswietlenia.innerHTML = "";
+    }
+
 }
 
 
@@ -652,7 +692,6 @@ let imgTrybNocny = document.createElement("img");
 imgTrybNocny.setAttribute("src", "./moon.svg");
 imgTrybNocny.setAttribute("alt", "Tryb nocny");
 let parTrybNocny = document.createElement("p");
-parTrybNocny.innerHTML = "</br>";
 // do zastanowienia czy by wiecej nie ostylowac w css-ie zamiast dodawac puste paragrafy
 
 let przyciskDzienNoc = document.createElement("label");
