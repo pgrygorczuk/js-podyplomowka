@@ -377,7 +377,7 @@ function filtrujRok() {
     // sprawdza czy wszystkie kafelki sa ukryte
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
-	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmow spelniajacych kryteria wyszukiwania" + 
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających kryteria wyszukiwania" + 
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "";
@@ -467,9 +467,9 @@ function wyswietlFilmyIwidoczne() {
     
     if (starePar.length) { 	// jesli sa juz stare paragrafy
 	// to podmieniamy ich tresc
-	starePar[0].innerHTML = "Liczba wszystkich filmow w bazie: " + 
+	starePar[0].innerHTML = "Liczba wszystkich filmów w bazie: " + 
 	    liczbaFilmow;
-	starePar[1].innerHTML = "Liczba filmow aktualnie widocznych: " +
+	starePar[1].innerHTML = "Liczba filmów aktualnie widocznych: " +
 	    liczbaWidocznych;
     } else { 			// w przeciwnym wypadku tworzymy je
 	// i dodajemy
@@ -478,9 +478,9 @@ function wyswietlFilmyIwidoczne() {
 	let widoczne = document.createElement("p");
 	widoczne.setAttribute("class", "liczba-filmow");
 
-	filmy.innerHTML = "Liczba wszystkich filmow w bazie: " +
+	filmy.innerHTML = "Liczba wszystkich filmów w bazie: " +
 	    liczbaFilmow;
-	widoczne.innerHTML = "Liczba filmow aktualnie widocznych: " +
+	widoczne.innerHTML = "Liczba filmów aktualnie widocznych: " +
 	    liczbaWidocznych;
 	
 	// wstawienie nowych (zupdate-owanych paragrafow)
@@ -629,7 +629,7 @@ function filtrujPoTagu() {
     // sprawdza czy wszystkie kafelki sa ukryte
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
-	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmow spelniajacych kryteria wyszukiwania" + 
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających kryteria wyszukiwania" + 
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "";
@@ -878,7 +878,7 @@ output.insertBefore(poleDodajRok, listaSlow);
 
 let poleDodajTytul = document.createElement("input");
 poleDodajTytul.setAttribute("type", "text");
-poleDodajTytul.setAttribute("placeholder", "Dodaj tytul (max. 50 znakow)");
+poleDodajTytul.setAttribute("placeholder", "Dodaj tytuł (max. 50 znaków)");
 poleDodajTytul.setAttribute("size", "50");
 poleDodajTytul.setAttribute("maxlength", "50"); 
 
@@ -923,22 +923,23 @@ function weryfikujFilm() {
     parWalidacjaDodanegoFilmu.style.color = "red";
 
     if (poleDodajTytul.value === "") {
-	parWalidacjaDodanegoFilmu.innerHTML = "Pole 'dodaj tytul filmu' nie moze byc puste!";
+	parWalidacjaDodanegoFilmu.innerHTML = "Pole 'dodaj tytuł filmu' nie może być puste!";
 	czyOk = false;
     }
     if (poleDodajRok.value === "") {
-	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' nie moze byc puste!";
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' nie może być puste!";
 	czyOk = false;
     } else if (!czyCzteryCyfry(poleDodajRok.value)) {
-	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierac 4 cyfry";
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać 4 cyfry";
 	czyOk = false;
     } else if (poleDodajRok.value < 1888 || 
 	       poleDodajRok.value > aktualny_rok) {
-	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierac wartosc" +
-	    "  pomiedzy rokiem 1888 a rokiem bierzacym";
+	console.log("wywolanie rok pomiedzy");
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać wartość" +
+	    "  pomiędzy rokiem 1888 a rokiem bierzącym.";
 	czyOk = false;
     } else if (czyFilmJestWbazie(poleDodajTytul.value, poleDodajRok.value)) {
-	parWalidacjaDodanegoFilmu.innerHTML = "Podany film znajduje sie juz w bazie";
+	parWalidacjaDodanegoFilmu.innerHTML = "Podany film znajduje się już w bazie.";
 	czyOk = false;
     }
     return czyOk;
@@ -951,16 +952,17 @@ function dodajFilm() {
     parWalidacjaDodanegoFilmu.innerHTML = ""; // resetowanie pola jesli tam wczesniej bylo cos wpisane
     
     let filmDoDodania = "";
+    let FilmZweryfikowany = weryfikujFilm();
     
     // weryfikacja dodanego filmu
-    if (weryfikujFilm() && ostatnioSortowanePo === ""){
+    if (FilmZweryfikowany && ostatnioSortowanePo === ""){
 	// dodanie zweryfikowanego filmu na koniec listy filmow
 	filmDoDodania += poleDodajTytul.value + " (" + poleDodajRok.value + ")";
 	listOfMovies.push(filmDoDodania);
 
 	// wyswietlenie wiadomosci o dodaniu filmu
-	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie dodawano film do " +
-	    "konca listy filmow";
+	parWalidacjaDodanegoFilmu.innerHTML = "Pomyślnie dodano film do " +
+	    "końca listy filmów";
 	parWalidacjaDodanegoFilmu.style.color = "green";
 	
 
@@ -974,7 +976,7 @@ function dodajFilm() {
 	
 	// update listyTagow
 	updateListaTagow();
-    } else if (weryfikujFilm() && ostatnioSortowanePo === "rok") {
+    } else if (FilmZweryfikowany && ostatnioSortowanePo === "rok") {
 	rokRosnaco = !rokRosnaco; // zamieniamy do stanu poprzedniego sortowania
 
 	// dodanie zweryfikowanego filmu na koniec listy filmow
@@ -990,10 +992,10 @@ function dodajFilm() {
 
 	// wyswietlenie wiadomosci o dodaniu filmu
 	// tu film zostal wstawiony we wlasciwe miejsce a nie na koniec kafelkow
-	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie dodawano film do listy.";
+	parWalidacjaDodanegoFilmu.innerHTML = "Pomyślnie dodano film do listy.";
 	parWalidacjaDodanegoFilmu.style.color = "green";
 	    
-	} else if (weryfikujFilm() && ostatnioSortowanePo === "tytul"){
+	} else if (FilmZweryfikowany && ostatnioSortowanePo === "tytul"){
 
 	tytulRosnaco = !tytulRosnaco; // zamieniamy do stanu poprzedniego sortowania
 
@@ -1010,7 +1012,7 @@ function dodajFilm() {
 
 	// wyswietlenie wiadomosci o dodaniu filmu
 	// tu film zostal wstawiony we wlasciwe miejsce a nie na koniec kafelkow
-	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie dodawano film do listy.";
+	parWalidacjaDodanegoFilmu.innerHTML = "Pomyślnie dodano film do listy.";
 	parWalidacjaDodanegoFilmu.style.color = "green";
 	    
 	}
