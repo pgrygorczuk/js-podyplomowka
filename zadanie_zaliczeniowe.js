@@ -368,7 +368,6 @@ function filtrujRok() {
     // sprawdza czy wszystkie kafelki sa ukryte
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
-	console.log("brak wynikow do wyswietlenia");
 	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmow spelniajacych kryteria wyszukiwania" + 
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
@@ -743,6 +742,10 @@ function sortujPoTytule() {
 	listOfMovies.sort((a, b) => getTitle(a).localeCompare(getTitle(b)));
 	tytulRosnaco = !tytulRosnaco;
 	
+	// update-owanie napisu w przycisku
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
+	przyciskSortujPoTytule.value = "Sortuj po tytule (desc)";
+	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
 	output.appendChild(utworzListeKafelkow(listOfMovies));
@@ -755,6 +758,10 @@ function sortujPoTytule() {
 	listOfMovies.sort((a, b) => getTitle(b).localeCompare(getTitle(a)));
 	tytulRosnaco = !tytulRosnaco;
 
+	// update-owanie napisu w przycisku
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
+	przyciskSortujPoTytule.value = "Sortuj po tytule (asc)";
+
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
 	output.appendChild(utworzListeKafelkow(listOfMovies));
@@ -763,17 +770,24 @@ function sortujPoTytule() {
 	updateFilmyIwidoczne();
 	wyswietlFilmyIwidoczne();
     }
+
+    // aby przy dodaniu filmu do listy posortowac je odpowiednio przy wyswietleniu
+    ostatnioSortowanePo = "tytul";
 }
 
 let rokRosnaco = true;
 
 // funkcja sortujPoRoku zmienia w miejscu listOfMovies
 function sortujPoRoku() {
- 
+    
     if (rokRosnaco) {
 	// getYear() zwraca rok jako string (np. "1998")
 	listOfMovies.sort((a, b) => parseInt(getYear(a)) - parseInt(getYear(b)));
 	rokRosnaco = !rokRosnaco;
+	
+	// update-owanie napisu w przycisku
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
+	przyciskSortujPoRoku.value = "Sortuj po roku (desc)";
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
@@ -782,10 +796,15 @@ function sortujPoRoku() {
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
 	updateFilmyIwidoczne();
 	wyswietlFilmyIwidoczne();
+	
 
     } else {
 	listOfMovies.sort((a, b) => parseInt(getYear(b)) - parseInt(getYear(a)));
 	rokRosnaco = !rokRosnaco;
+
+	// update-owanie napisu w przycisku
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
+	przyciskSortujPoRoku.value = "Sortuj po roku (desc)";
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
@@ -796,17 +815,23 @@ function sortujPoRoku() {
 	wyswietlFilmyIwidoczne();
 
     }
+    // aby przy dodaniu filmu do listy posortowac je odpowiednio przy wyswietleniu
+    ostatnioSortowanePo = "rok";
 }
+
+// poczatkow pusty string, a potem zmiana na "rok" lub "tytul"
+// aby przy dodaniu filmu do listy posortowac je odpowiednio przy wyswietleniu
+let ostatnioSortowanePo = "";
 
 let przyciskSortujPoTytule = document.createElement("input");
 przyciskSortujPoTytule.setAttribute("type", "button");
-przyciskSortujPoTytule.value = "Sortuj po tytule";
+przyciskSortujPoTytule.value = "Sortuj po tytule (asc)";
 przyciskSortujPoTytule.onclick = sortujPoTytule;
-
 
 let przyciskSortujPoRoku = document.createElement("input");
 przyciskSortujPoRoku.setAttribute("type", "button");
-przyciskSortujPoRoku.value = "Sortuj po roku";
+// po uruchomieniu strony bedzie tylko sortuj po roku
+przyciskSortujPoRoku.value = "Sortuj po roku (asc)";
 przyciskSortujPoRoku.onclick = sortujPoRoku;
 
 output.insertBefore(przyciskSortujPoTytule, listaSlow);
@@ -919,11 +944,11 @@ function dodajFilm() {
     let filmDoDodania = "";
     
     // weryfikacja dodanego filmu
-    if (weryfikujFilm()){
+    if (weryfikujFilm() && ostatnioSortowanePo === ""){
 	// dodanie zweryfikowanego filmu na koniec listy filmow
 	filmDoDodania += poleDodajTytul.value + " (" + poleDodajRok.value + ")";
 	listOfMovies.push(filmDoDodania);
-	
+
 	// wyswietlenie wiadomosci o dodaniu filmu
 	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie dodawano film do " +
 	    "konca listy filmow";
@@ -940,7 +965,46 @@ function dodajFilm() {
 	
 	// update listyTagow
 	updateListaTagow();
-    }
+    } else if (weryfikujFilm() && ostatnioSortowanePo === "rok") {
+	rokRosnaco = !rokRosnaco; // zamieniamy do stanu poprzedniego sortowania
+
+	// dodanie zweryfikowanego filmu na koniec listy filmow
+	filmDoDodania += poleDodajTytul.value + " (" + poleDodajRok.value + ")";
+	listOfMovies.push(filmDoDodania);
+
+	// sortujemy po tytule
+	// (tu jest usuwanie i tworzenie listy kafelkow, update liczby filmow i filmow widocznych)
+	sortujPoRoku();
+
+	// updateujemy tagi
+	updateListaTagow();
+
+	// wyswietlenie wiadomosci o dodaniu filmu
+	// tu film zostal wstawiony we wlasciwe miejsce a nie na koniec kafelkow
+	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie dodawano film do listy.";
+	parWalidacjaDodanegoFilmu.style.color = "green";
+	    
+	} else if (weryfikujFilm() && ostatnioSortowanePo === "tytul"){
+
+	tytulRosnaco = !tytulRosnaco; // zamieniamy do stanu poprzedniego sortowania
+
+	// dodanie zweryfikowanego filmu na koniec listy filmow
+	filmDoDodania += poleDodajTytul.value + " (" + poleDodajRok.value + ")";
+	listOfMovies.push(filmDoDodania);
+
+	// sortujemy po tytule
+	// (tu jest usuwanie i tworzenie listy kafelkow, update liczby filmow i filmow widocznych)
+	sortujPoTytule();
+	    
+	// updateujemy tagi
+	updateListaTagow();
+
+	// wyswietlenie wiadomosci o dodaniu filmu
+	// tu film zostal wstawiony we wlasciwe miejsce a nie na koniec kafelkow
+	parWalidacjaDodanegoFilmu.innerHTML = "Pomyslnie dodawano film do listy.";
+	parWalidacjaDodanegoFilmu.style.color = "green";
+	    
+	}
     
     
 }
