@@ -142,6 +142,16 @@ function czyWszystkieUkryte() {
     return true;
 }
 
+// przyjmuje string (tytul z rokiem) i string "slowo"
+// i sprawdza czy tytul zawiera slowo
+function czyTytulZawieraSlowo(tytulZrokiem, slowo) {
+    let tytulBezRoku = getTitle(tytulZrokiem);
+    let wszystkieSlowa = tytulBezRoku.toLocaleLowerCase().split(" ");
+    let wynik = wszystkieSlowa.includes(slowo);
+    return wynik;
+}
+
+
 // zwraca element (ul)
 // z podelementami (li)
 // kazdy li to div.kafelek, a ten z kolei to 2 divy:
@@ -241,8 +251,7 @@ function utworzListeKafelkow(tabFilmow) {
 	    let kafelek = utworzKafelek(tabFilmow[i]);
 
 	    // filtrowanie po roku
-	    // -1 oznacza ze danego tagu/slowa nie ma w tytule filmu
-	    if (getTitle(tabFilmow[i]).toLocaleLowerCase().indexOf(wybranyTag) === -1) { 
+	    if (!czyTytulZawieraSlowo(tabFilmow[i], wybranyTag)) { 
 		eltListy.hidden = true;
 	    } else { 	
 		// zmienamy (naprzemiennie) i 
@@ -280,7 +289,7 @@ function utworzListeKafelkow(tabFilmow) {
 
 	    // filtrowanie po roku
 	    // -1 oznacza ze danego tagu/slowa nie ma w tytule filmu
-	    if (getTitle(tabFilmow[i]).toLocaleLowerCase().indexOf(wybranyTag) === -1 ||
+	    if (!czyTytulZawieraSlowo(tabFilmow[i], wybranyTag) ||
 	       getYear(tabFilmow[i]) !== wybranyRok) { 
 		eltListy.hidden = true;
 	    } else { 	
@@ -599,7 +608,7 @@ function zwrocUnikSlowaIwielkCzcionek() {
 // AND w stosunku do filtrowania po roku?
 // na razie dano 2 oddzielne filtrowania, a potem jak cos to to mozna zmienic
 function filtrujPoTagu() {
-    
+
     // usuniecie podswietlenia z tagu
     let listaTagow = document.querySelectorAll("ol > li");
     for (let i = 0; i < listaTagow.length; i++) {
