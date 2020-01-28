@@ -936,7 +936,7 @@ function weryfikujFilm() {
 	       poleDodajRok.value > aktualny_rok) {
 	console.log("wywolanie rok pomiedzy");
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać wartość" +
-	    "  pomiędzy rokiem 1888 a rokiem bierzącym.";
+	    "  pomiędzy rokiem 1888 a rokiem bieżącym.";
 	czyOk = false;
     } else if (czyFilmJestWbazie(poleDodajTytul.value, poleDodajRok.value)) {
 	parWalidacjaDodanegoFilmu.innerHTML = "Podany film znajduje się już w bazie.";
