@@ -1009,7 +1009,6 @@ function weryfikujFilm() {
 	czyOk = false;
     } else if (poleDodajRok.value < 1888 || // patrzy wczesniejszy komentarz
 	       poleDodajRok.value > aktualny_rok) {
-	console.log("wywolanie rok pomiedzy");
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać wartość" +
 	    "  pomiędzy rokiem 1888 a rokiem bieżącym.";
 	czyOk = false;
