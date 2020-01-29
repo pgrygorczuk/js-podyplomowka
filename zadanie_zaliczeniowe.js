@@ -147,7 +147,8 @@ function czyWszystkieUkryte() {
 function czyTytulZawieraSlowo(tytulZrokiem, slowo) {
     let tytulBezRoku = getTitle(tytulZrokiem);
     // tu damy regex aby wywalic ewentualne przecinki ktore moga byc w tytule
-    let re = /,* /;
+    let re = /,*\.* /;
+    // slowa sa oddzielone spacjami lub (przecinek i spacja) lub (kropka i spacja)
     let wszystkieSlowa = tytulBezRoku.toLocaleLowerCase().split(re);
     let wynik = wszystkieSlowa.includes(slowo);
     return wynik;
@@ -505,8 +506,9 @@ function wyswietlFilmyIwidoczne() {
 // slowa moga sie powtarzac
 function getSlowa(tytul) {
     // tu damy regex aby wywalic ewentulne przecinki z tytulu
-    let re = /,* /;
-    let slowa = tytul.split(re); // slowa sa oddzielone spacjami lub przecinek i spacja
+    let re = /,*\.* /;
+    // slowa sa oddzielone spacjami lub (przecinek i spacja) lub (kropka i spacja)
+    let slowa = tytul.split(re); 
     slowa = slowa.map((slowo) => slowo.toLocaleLowerCase());
     return slowa;
 }
