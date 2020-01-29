@@ -147,8 +147,9 @@ function czyWszystkieUkryte() {
 function czyTytulZawieraSlowo(tytulZrokiem, slowo) {
     let tytulBezRoku = getTitle(tytulZrokiem);
     // tu damy regex aby wywalic ewentualne przecinki ktore moga byc w tytule
-    let re = /,*\.* /;
-    // slowa sa oddzielone spacjami lub (przecinek i spacja) lub (kropka i spacja)
+    let re = /,*\.*\:* /;
+    // slowa sa oddzielone spacjami lub (, i spacja) lub (. i spacja), (: i spacja)
+    // typu: "wladca pierscieni: druzyna pierscienia"; "alien vs. predator"; "hobbit, czyli tam i z powrotem"
     let wszystkieSlowa = tytulBezRoku.toLocaleLowerCase().split(re);
     let wynik = wszystkieSlowa.includes(slowo);
     return wynik;
@@ -505,9 +506,10 @@ function wyswietlFilmyIwidoczne() {
 // zwraca tablice slow pisanych malymi literami z 1 tytulu (string bez roku)
 // slowa moga sie powtarzac
 function getSlowa(tytul) {
-    // tu damy regex aby wywalic ewentulne przecinki z tytulu
-    let re = /,*\.* /;
-    // slowa sa oddzielone spacjami lub (przecinek i spacja) lub (kropka i spacja)
+    // tu damy regex aby wywalic ewentulne przecinki, kropki i dwukropki, z tytulu
+    let re = /,*\.*\:* /;
+    // slowa sa oddzielone spacjami lub (, i spacja) lub (. i spacja), (: i spacja)
+    // typu: "wladca pierscieni: druzyna pierscienia"; "alien vs. predator"; "hobbit, czyli tam i z powrotem"
     let slowa = tytul.split(re); 
     slowa = slowa.map((slowo) => slowo.toLocaleLowerCase());
     return slowa;
@@ -594,6 +596,7 @@ function zwrocUnikSlowaIwielkCzcionek() {
     // dodamy na poczatku ten tag "wszystkie tagi" do wyswietlanie wszystkich filmow
     // lepiej wygladalby przycisk (tak jak ja to zrobilem przy latach)
     // no ale zadanie to zadanie
+    // bedzie jednak wszystkie tagi bo tytul w stylu: "wszystkie psy ida do nieba" bedzie klopotliwy
     unikalneSlowa.unshift("wszystkie tagi");
     liczbWystSlowa.unshift(4); 	// da to czcionke = 20px
    
