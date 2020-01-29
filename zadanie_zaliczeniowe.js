@@ -381,7 +381,8 @@ function filtrujRok() {
     // sprawdza czy wszystkie kafelki sa ukryte
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
-	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających kryteria wyszukiwania" + 
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających zadane kryteria wyszukiwania (" + 
+	    "rok: '" + wybranyRok + "' ORAZ tag: '" + wybranyTag + "')" +
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "";
@@ -638,7 +639,8 @@ function filtrujPoTagu() {
     // sprawdza czy wszystkie kafelki sa ukryte
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
-	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających kryteria wyszukiwania" + 
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających zadane kryteria wyszukiwania (" + 
+	    "rok: '" + wybranyRok + "' ORAZ tag: '" + wybranyTag + "')" +
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "";
