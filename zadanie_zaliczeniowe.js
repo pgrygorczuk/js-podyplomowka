@@ -307,7 +307,7 @@ function utworzListeKafelkow(tabFilmow) {
 
 	    // filtrowanie po roku i tagu
 	    if (!czyTytulZawieraSlowo(tabFilmow[i], wybranyTag) ||
-	       getYear(tabFilmow[i]) !== wybranyRok) { 
+		getYear(tabFilmow[i]) !== wybranyRok) { 
 		eltListy.hidden = true;
 	    } else { 	
 		// zmienamy (naprzemiennie) i 
@@ -636,7 +636,7 @@ function zwrocUnikSlowaIwielkFontow() {
     // "wszystkie psy ida do nieba" bedzie klopotliwy
     unikalneSlowa.unshift("wszystkie tagi");
     liczbWystSlowa.unshift(4); 	// a to da w efekcie czcionke = 20px
-   
+    
     // obliczmy wielkosci czcionek
     let wielkosciCzcionek = 
 	liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
@@ -954,8 +954,8 @@ poleDodajTytul.setAttribute("size", "50");
 poleDodajTytul.setAttribute("maxlength", "50"); 
 
 // czy rok sklada sie z samych cyfr
-function czySameCyfry(tekst) {
-    let czyTylkoCyfry = true;
+function czyTylkoCyfry(tekst) {
+    let tylkoCyfry = true;
     for (let i = 0; i < tekst.length; i++) {
 	if (tekst[i] >= "0" && tekst[i] <= "9") {
 	    // nie rob nic (odpowiedz juz jest true)
@@ -963,7 +963,7 @@ function czySameCyfry(tekst) {
 	    return false;
 	}
     }
-    return czyTylkoCyfry;
+    return tylkoCyfry;
 }
 
 // przyjmuje 2 stringi tytul i rok i sprawdza czy film jest juz w bazie filmow
@@ -972,7 +972,7 @@ function czyFilmJestWbazie(tytul, rok) {
     let czyWbazie = false;
     
     let pelenTytul = tytul + " (" + rok + ")";
-   
+    
     for (let i = 0; i < listOfMovies.length; i++) {
 	if(listOfMovies[i].toLocaleLowerCase() === pelenTytul.toLocaleLowerCase()) {
 	    return true;
@@ -1004,7 +1004,7 @@ function weryfikujFilm() {
     if (poleDodajRok.value === "") {
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' nie może być puste!";
 	czyOk = false;
-    } else if (!czySameCyfry(poleDodajRok.value)) {
+    } else if (!czyTylkoCyfry(poleDodajRok.value)) {
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać 4 cyfry";
 	czyOk = false;
     } else if (poleDodajRok.value < 1888 || // patrzy wczesniejszy komentarz
@@ -1058,8 +1058,8 @@ function dodajFilm() {
 	// update listyTagow
 	updateListaTagow();
 
-    // sprawdza czy wczesniej bylo sortowanie
-    // jesli tak (po roku) to film dodawany jest w odp. miejsce listy i kafelkow
+	// sprawdza czy wczesniej bylo sortowanie
+	// jesli tak (po roku) to film dodawany jest w odp. miejsce listy i kafelkow
     } else if (FilmZweryfikowany && ostatnioSortowanePo === "rok") {
 	rokRosnaco = !rokRosnaco; // zamieniamy do stanu poprzedniego sortowania
 
@@ -1079,10 +1079,10 @@ function dodajFilm() {
 	// tu film zostal wstawiony we wlasciwe miejsce a nie na koniec kafelkow
 	parWalidacjaDodanegoFilmu.innerHTML = "Pomyślnie dodano film do listy.";
 	parWalidacjaDodanegoFilmu.style.color = "green";
-	    
+	
 	// sprawdza czy wczesniej bylo sortowanie
 	// jesli tak (po tytule) to film dodawany jest w odp. miejsce listy i kafelkow
-	} else if (FilmZweryfikowany && ostatnioSortowanePo === "tytul"){
+    } else if (FilmZweryfikowany && ostatnioSortowanePo === "tytul"){
 
 	tytulRosnaco = !tytulRosnaco; // zamieniamy do stanu poprzedniego sortowania
 
@@ -1094,7 +1094,7 @@ function dodajFilm() {
 	// (tu jest usuwanie i tworzenie listy kafelkow,
 	// update liczby filmow i filmow widocznych)
 	sortujPoTytule();
-	    
+	
 	// updateujemy tagi
 	updateListaTagow();
 
@@ -1102,8 +1102,8 @@ function dodajFilm() {
 	// tu film zostal wstawiony we wlasciwe miejsce a nie na koniec kafelkow
 	parWalidacjaDodanegoFilmu.innerHTML = "Pomyślnie dodano film do listy.";
 	parWalidacjaDodanegoFilmu.style.color = "green";
-	    
-	}
+	
+    }
     
     
 }
