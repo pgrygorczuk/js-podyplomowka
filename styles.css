@@ -140,3 +140,12 @@ img {
     height: 60px;
     width: 60px;
 }
+
+/* ponizej aby na elementach klikalnych kursor zmienial sie w pointer ('raczka') */
+select {
+    cursor: pointer;
+}
+
+input[type=button] {
+    cursor: pointer;
+}
