@@ -141,11 +141,15 @@ img {
     width: 60px;
 }
 
-/* ponizej aby na elementach klikalnych kursor zmienial sie w pointer ('raczka') */
 select {
-    cursor: pointer;
+    cursor: pointer; /*kursor jako pointer ('raczka') */
 }
 
 input[type=button] {
-    cursor: pointer;
+    cursor: pointer; 		/*kursor jako pointer ('raczka') */
 }
+
+.tryb_nocny input[type=text] {
+    background-color: #e8e8e8;
+}
+

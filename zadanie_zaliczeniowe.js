@@ -342,7 +342,7 @@ output.appendChild(listaKafelkow);
 // ponizsze potrzebne aby wyswietlac monit o braku wynikow do wyswietlenia 
 // przy filtrowaniu
 let infoBrakWynikowDoWyswietlenia = document.createElement("p");
-infoBrakWynikowDoWyswietlenia.style.color = "red";
+infoBrakWynikowDoWyswietlenia.style.color = "firebrick";
 output.appendChild(infoBrakWynikowDoWyswietlenia);
 
 updateFilmyWszystkieIwidoczne();
@@ -404,7 +404,7 @@ function filtrujPoRoku() {
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających " + 
-	    "zadane kryteria wyszukiwania (" + 
+	    "kryteria wyszukiwania (" + 
 	    "rok: '" + wybranyRok + "' ORAZ tag: '" + wybranyTag + "')" +
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
@@ -682,7 +682,7 @@ function filtrujPoTagu() {
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających " +
-	    "zadane kryteria wyszukiwania (" + 
+	    "kryteria wyszukiwania (" + 
 	    "rok: '" + wybranyRok + "' ORAZ tag: '" + wybranyTag + "')" +
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
@@ -800,6 +800,7 @@ let tytulRosnaco = true;
 function sortujPoTytule() {
 
     if (tytulRosnaco) {
+	// mozliwosc przeslania wlasnej funkcji sortujacej daje duza plastycznosc
 	listOfMovies.sort((a, b) => getTitle(a).localeCompare(getTitle(b)));
 	tytulRosnaco = !tytulRosnaco;
 	
@@ -819,6 +820,7 @@ function sortujPoTytule() {
 	wyswietlFilmyWszystkieIwidoczne();
 
     } else {
+	// mozliwosc przeslania wlasnej funkcji sortujacej daje duza plastycznosc
 	listOfMovies.sort((a, b) => getTitle(b).localeCompare(getTitle(a)));
 	tytulRosnaco = !tytulRosnaco;
 
@@ -851,6 +853,7 @@ let rokRosnaco = true;
 function sortujPoRoku() {
     
     if (rokRosnaco) {
+	// mozliwosc przeslania wlasnej funkcji sortujacej daje duza plastycznosc
 	// getYear() zwraca rok jako string (np. "1998")
 	listOfMovies.sort((a, b) => parseInt(getYear(a)) - parseInt(getYear(b)));
 	rokRosnaco = !rokRosnaco;
@@ -872,6 +875,8 @@ function sortujPoRoku() {
 	
 
     } else {
+	// mozliwosc przeslania wlasnej funkcji sortujacej daje duza plastycznosc
+	// getYear() zwraca rok jako string (np. "1998")
 	listOfMovies.sort((a, b) => parseInt(getYear(b)) - parseInt(getYear(a)));
 	rokRosnaco = !rokRosnaco;
 
@@ -932,7 +937,7 @@ output.insertBefore(przyciskSortujPoRoku, listaSlow);
 
 // tu bedziemy wypisywac komunikat o bledzie w dodawaniu filmu
 let parWalidacjaDodanegoFilmu = document.createElement("p");
-parWalidacjaDodanegoFilmu.style.color = "red";
+parWalidacjaDodanegoFilmu.style.color = "firebrick";
 
 // tu bedziemy wpisaywac rok
 let poleDodajRok = document.createElement("input");
@@ -995,21 +1000,21 @@ function weryfikujFilm() {
     // wg. https://en.wikipedia.org/wiki/Film najstarszy znany film pochodzi z 1888
     
     // dodanie koloru czerwonego do czcionki z ostrzezeniem
-    parWalidacjaDodanegoFilmu.style.color = "red";
+    parWalidacjaDodanegoFilmu.style.color = "firebrick";
 
     if (poleDodajTytul.value === "") {
-	parWalidacjaDodanegoFilmu.innerHTML = "Pole 'dodaj tytuł filmu' nie może być puste!";
+	parWalidacjaDodanegoFilmu.innerHTML = "Pole 'dodaj tytuł' nie może być puste!";
 	czyOk = false;
     }
     if (poleDodajRok.value === "") {
-	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' nie może być puste!";
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok' nie może być puste!";
 	czyOk = false;
     } else if (!czyTylkoCyfry(poleDodajRok.value)) {
-	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać 4 cyfry";
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok' musi zawierać 4 cyfry";
 	czyOk = false;
     } else if (poleDodajRok.value < 1888 || // patrzy wczesniejszy komentarz
 	       poleDodajRok.value > aktualny_rok) {
-	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać wartość" +
+	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok' musi zawierać wartość" +
 	    "  pomiędzy rokiem 1888 a rokiem bieżącym.";
 	czyOk = false;
     } else if (czyFilmJestWbazie(poleDodajTytul.value, poleDodajRok.value)) {
