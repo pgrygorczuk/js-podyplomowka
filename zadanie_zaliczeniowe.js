@@ -146,7 +146,9 @@ function czyWszystkieUkryte() {
 // i sprawdza czy tytul zawiera slowo
 function czyTytulZawieraSlowo(tytulZrokiem, slowo) {
     let tytulBezRoku = getTitle(tytulZrokiem);
-    let wszystkieSlowa = tytulBezRoku.toLocaleLowerCase().split(" ");
+    // tu damy regex aby wywalic ewentualne przecinki ktore moga byc w tytule
+    let re = /,* /;
+    let wszystkieSlowa = tytulBezRoku.toLocaleLowerCase().split(re);
     let wynik = wszystkieSlowa.includes(slowo);
     return wynik;
 }
@@ -502,7 +504,9 @@ function wyswietlFilmyIwidoczne() {
 // zwraca tablice slow pisanych malymi literami z 1 tytulu (string bez roku)
 // slowa moga sie powtarzac
 function getSlowa(tytul) {
-    let slowa = tytul.split(" "); // slowa sa oddzielone spacjami
+    // tu damy regex aby wywalic ewentulne przecinki z tytulu
+    let re = /,* /;
+    let slowa = tytul.split(re); // slowa sa oddzielone spacjami lub przecinek i spacja
     slowa = slowa.map((slowo) => slowo.toLocaleLowerCase());
     return slowa;
 }
