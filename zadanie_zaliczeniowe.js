@@ -56,19 +56,23 @@ const listOfMovies = [
 // inną klasę, która zmieni mu tło.
 
 // tu bedziemy wszystko wypisywac
+// generalne zalozenie: HTML ma byc goly poza tym divem "out"
 let output = document.getElementById("out");
 
 // do punktu 3
 let liczbaFilmow = listOfMovies.length;
 let liczbaWidocznych = listOfMovies.length;
 
-// ok, to bedziemy potrzebowac wydobyc tytul i rok z filmu
+// ok, bedziemy potrzebowac wydobyc tytul z filmu
+// przyjmuje tytul jako string postaci "tytul (rok)"
 // zwraca tytul jako string
 function getTitle(film) {
     let tytul = film.split(" (")[0]; // tniemy po " ("
     return tytul;
 }
 
+// ok, bedziemy potrzebowac wydobyc rok z filmu
+// przyjmuje tytul jako string postaci "tytul (rok)"
 // zwraca rok jako string
 function getYear(film) {
     let rok = film.split(" (")[1]; // tu bedzie z nawiasem zamykajacym
@@ -78,11 +82,12 @@ function getYear(film) {
 
 
 // utworzymy funkcje wypisujaca filmy (tablica listOfMovies)
-// do undefined list (lista)
-// i zwracajacy ta liste
-
+// do unordered list (lista kafelkow)
+// i zwracajacy ta liste kafelkow
 let lista = document.createElement("ul");
 
+// podfunkcja do funkcji utworzListekafelkow()
+// przyjmuje tytul jako string postaci "tytul (rok)"
 // zwraca element (div z klasa tytul)
 // z tytulem wstawionym z jakiegos filmu
 function utworzTytul(film) {
@@ -94,6 +99,8 @@ function utworzTytul(film) {
     return tytul;
 }
 
+// podfunkcja do funkcji utworzListekafelkow()
+// przyjmuje tytul jako string postaci "tytul (rok)"
 // zwraca element (div z klasa rok)
 // z rokiem wstawionym z jakiegos filmu
 function utworzRok(film) {
@@ -105,10 +112,12 @@ function utworzRok(film) {
     return rok;
 }
 
+// podfunkcja do funkcji utworzListekafelkow()
+// przyjmuje tytul jako string postaci "tytul (rok)"
 // zwraca kafelek (div z klasa kafelek)
 // w tym divie beda 2 poddivy
-// pod-div z klasa tytul
-// pod-div z klasa rok
+// pod-div z klasa tytul <- funkcja utworzTytul()
+// pod-div z klasa rok <- funkcja utworzRok()
 function utworzKafelek(film) {
     let kafelek = document.createElement("div");
     kafelek.classList.add("kafelek");
@@ -123,15 +132,18 @@ function utworzKafelek(film) {
 
 
 // zmienna globalna przechowujaca aktualnie wybrany rok
+// bedzie potrzebna np. przy sortowaniu, dodawaniu nowego filmu
 let wybranyRok = "wszystkie lata";
 
-// zmienna globalna przechowujaca wybrane tagi
+// zmienna globalna przechowujaca aktualnie wybrany tag
+// bedzie potrzebna, np. przy sortowaniu, dodawaniu nowego filmu
 let wybranyTag = "wszystkie tagi";
 
 
 // funkcja czyWszystkieUkryte
 // potrzebna aby wyswietlic info o braku rekordow (kafelkow) do wyswietlenia
 // tj. spelniajacych kryteria danego filtrowania
+// zczytuje kafelki ("ul > li") z dokumentu HTML
 function czyWszystkieUkryte() {
     let kafelkiWdokumencie = document.querySelectorAll("ul > li");
     for (let i = 0; i < kafelkiWdokumencie.length; i++) {
@@ -142,8 +154,8 @@ function czyWszystkieUkryte() {
     return true;
 }
 
-// przyjmuje string (tytul z rokiem) i string "slowo"
-// i sprawdza czy tytul zawiera slowo
+// przyjmuje string "tytul (rok)" i string slowo
+// sprawdza czy tytul zawiera slowo
 function czyTytulZawieraSlowo(tytulZrokiem, slowo) {
     let tytulBezRoku = getTitle(tytulZrokiem);
     // tu damy regex aby wywalic ewentualne przecinki ktore moga byc w tytule
@@ -155,12 +167,13 @@ function czyTytulZawieraSlowo(tytulZrokiem, slowo) {
     return wynik;
 }
 
-
+// jedna z wazniejszych (najwazniejsza?) funkcji (ostatecznie sie tak rozrosla)
 // zwraca element (ul)
 // z podelementami (li)
-// kazdy li to div.kafelek, a ten z kolei to 2 divy:
-// div.tytul
-// div.rok
+// kazdy li to div.kafelek, <- utworzKafelek()
+// a ten z kolei to 2 divy:
+// div.tytul <- utworzTytul()
+// div.rok <- utworzRok()
 // funkcja troche dluga (choc chyba w miare klarowna)
 // niemniej jednak moznaby sie zastanowic nad skroceniem
 // (usuniecie duplikcaji kodu, danie podfunkcji)
@@ -193,7 +206,7 @@ function utworzListeKafelkow(tabFilmow) {
 		kafelek.classList.add("inny_kolor");
 	    }
 	    
-	    // dodajemy kafelek do eleListy
+	    // dodajemy kafelek do eltListy
 	    eltListy.appendChild(kafelek);
 	    
 	    // dodaj eltListy do listyKafelkow
@@ -234,7 +247,7 @@ function utworzListeKafelkow(tabFilmow) {
 		innyKolor = !innyKolor;
 	    }
 
-	    // dodajemy kafelek do eleListy
+	    // dodajemy kafelek do eltListy
 	    eltListy.appendChild(kafelek);
 	    
 	    // dodaj eltListy do listyKafelkow
@@ -247,7 +260,7 @@ function utworzListeKafelkow(tabFilmow) {
 
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
-	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
+	    // tworzymy widoczny kafelek tylko jesli tag nam sie zgadza (filtrowanie)
 
 	    // tworzymy element listy
 	    let eltListy = document.createElement("li");
@@ -272,7 +285,7 @@ function utworzListeKafelkow(tabFilmow) {
 		innyKolor = !innyKolor;
 	    }
 
-	    // dodajemy kafelek do eleListy
+	    // dodajemy kafelek do eltListy
 	    eltListy.appendChild(kafelek);
 	    
 	    // dodaj eltListy do listyKafelkow
@@ -284,15 +297,15 @@ function utworzListeKafelkow(tabFilmow) {
 
 	for (let i = 0; i < tabFilmow.length; i++) {
 	    
-	    // tworzymy widoczny kafelek tylko jesli rok nam sie zgadza (filtrowanie)
+	    // tworzymy widoczny kafelek tylko jesli rok i tag nam sie 
+	    // zgadzaja (filtrowanie)
 
 	    // tworzymy element listy
 	    let eltListy = document.createElement("li");
 
 	    let kafelek = utworzKafelek(tabFilmow[i]);
 
-	    // filtrowanie po roku
-	    // -1 oznacza ze danego tagu/slowa nie ma w tytule filmu
+	    // filtrowanie po roku i tagu
 	    if (!czyTytulZawieraSlowo(tabFilmow[i], wybranyTag) ||
 	       getYear(tabFilmow[i]) !== wybranyRok) { 
 		eltListy.hidden = true;
@@ -311,7 +324,7 @@ function utworzListeKafelkow(tabFilmow) {
 		innyKolor = !innyKolor;
 	    }
 
-	    // dodajemy kafelek do eleListy
+	    // dodajemy kafelek do eltListy
 	    eltListy.appendChild(kafelek);
 	    
 	    // dodaj eltListy do listyKafelkow
@@ -325,13 +338,15 @@ function utworzListeKafelkow(tabFilmow) {
 
 let listaKafelkow = utworzListeKafelkow(listOfMovies);
 output.appendChild(listaKafelkow);
-// ponizsze potrzebne aby wyswietlac monit o braku wynikow do wyswietlenia przy filtrowaniu
+
+// ponizsze potrzebne aby wyswietlac monit o braku wynikow do wyswietlenia 
+// przy filtrowaniu
 let infoBrakWynikowDoWyswietlenia = document.createElement("p");
 infoBrakWynikowDoWyswietlenia.style.color = "red";
 output.appendChild(infoBrakWynikowDoWyswietlenia);
 
-updateFilmyIwidoczne();
-wyswietlFilmyIwidoczne();
+updateFilmyWszystkieIwidoczne();
+wyswietlFilmyWszystkieIwidoczne();
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -347,41 +362,49 @@ wyswietlFilmyIwidoczne();
 
 // hmm, wychodzi na to, ze JavaScript nie ma funkcji unique
 // trzeba cokolwiek samemu na kolanie napisac
+// przyjmuje tabele ktorej kazdy element to string postaci "tytul (rok)"
+// zwraca tabele ktorej kazdy element to string postaci "[0-9]{4}"
 function getUniqueYears(tabFilmow) {
     
     let unikalneLata = [];
 
     for (let i = 0; i < listOfMovies.length; i++) {
 	let rok = getYear(listOfMovies[i]);
-	// tudziez mozna probowac wziac wszystkie lata i zrobic z tego set-a (JS ma chyba sety)
+	// tudziez mozna probowac wziac wszystkie lata i zrobic z tego set-a
+	// (JS ma chyba sety)
+	// przeslany do porownania rok jest zawsze 4 cyfrowy (string postaci "[0-9]{4}")
 	if (unikalneLata.indexOf(rok) === -1){
 	    unikalneLata.push(rok);
+	    // wrzucony do unikalnych rok jes zawsze 4 cyfrowy (string "[0-9]{4}")
 	}
     }
 
     return unikalneLata;
 }
 
-
+// prosciej bedzie usunac liste kafelkow i odbudowac ja z ukrytymi kafelkami
 function usunListeKafelkow() {
-    let listaKafelkow = document.getElementsByTagName("ul")[0]; // jest tylko 1 ul (elt 0) w dokumencie
+    // jest tylko 1 ul (elt 0) w dokumencie
+    let listaKafelkow = document.getElementsByTagName("ul")[0];
     listaKafelkow.remove();
 }
 
-function filtrujRok() {
+// usuwa liste kafelkow i odbudowuje ja przefiltrowana
+function filtrujPoRoku() {
     wybranyRok = this.innerHTML;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
     output.appendChild(utworzListeKafelkow(listOfMovies));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-    updateFilmyIwidoczne();
-    wyswietlFilmyIwidoczne();
+    updateFilmyWszystkieIwidoczne();
+    wyswietlFilmyWszystkieIwidoczne();
     
     // sprawdza czy wszystkie kafelki sa ukryte
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
-	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających zadane kryteria wyszukiwania (" + 
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających " + 
+	    "zadane kryteria wyszukiwania (" + 
 	    "rok: '" + wybranyRok + "' ORAZ tag: '" + wybranyTag + "')" +
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
@@ -389,12 +412,16 @@ function filtrujRok() {
     }
 }
 
+// tu beda lata do wybrania do filtrowania
 let select = document.createElement("select");
 
 // funkcja updateuje (przebudowuje) selecta na podstawie aktualnej zawartosci bazyfilmow
+// potrzebne przy dodaniu nowego filmu
+// (bo moze sie wtedy trafic rok ktorego nie bylo jeszcze w select-cie)
 function updateSelectRok() {
 
     let unikalnePremiery = getUniqueYears(listOfMovies);
+
     // sortujemy rosnaca
     // (sort robi to inplace wiec nie trzeba tego ponownie przypisywac)
     unikalnePremiery.sort((a, b) => parseInt(a) - parseInt(b));
@@ -402,18 +429,18 @@ function updateSelectRok() {
     // dodamy opje do selekta typu "wszystkie lata"
     unikalnePremiery.unshift("wszystkie lata"); // dodajemy z przodu listy
 
-    // usuwamy stare wartosci z select-a
+    // usuwamy stare wartosci z select-a (te co sa aktualnie w dokumencie)
     let ostatniaOpcja = select.lastElementChild;
     while(ostatniaOpcja){
 	select.removeChild(ostatniaOpcja);
 	ostatniaOpcja = select.lastElementChild;
     }
     
-    // zapelniamy select nowymi wartosciami
+    // zapelniamy select nowymi wartosciami (te ktore sa np. po dodaniu filmu)
     for (let i = 0; i < unikalnePremiery.length; i++) {
 	let opcja = document.createElement("option");
 	opcja.innerHTML = unikalnePremiery[i];
-	opcja.onclick = filtrujRok;
+	opcja.onclick = filtrujPoRoku;
 	if (opcja.innerHTML === wybranyRok){
 	    opcja.selected = true;
 	}
@@ -425,14 +452,11 @@ function updateSelectRok() {
 updateSelectRok();
 
 
-// oprocz selecta
-// dodamy tez guzik pokaz wszystkie filmy (aby resetowac)
-// mimo, ze tego nie ma w poleceniu
+// informacja dla uzytkownika o tym co ma/moze zrobic
 let parWybierzRok = document.createElement("p").innerHTML="Wybierz rok filmu: ";
 
 output.prepend(parWybierzRok, select); 	// aby selecta z filtrowaniem dac wczesniej
 // ewentualnie mozna dac firstChild czy cos takiego
-
 
 
 
@@ -443,14 +467,18 @@ output.prepend(parWybierzRok, select); 	// aby selecta z filtrowaniem dac wczesn
 // Powyżej listy filmów wyświetl napis mówiący o liczbie wszystkich
 // filmów oraz o liczbie aktualnie widocznych (nie ukrytych).
 
+// funkcje w tej sekcji sa uzywane jako podwykonawcy (bezposrednio) przez
+// liczFilmywidoczne() -> updateFilmywszystkieiwidoczne()
+// updatefilmywszystkieiwidoczne() ->
+// filtrujPoRoku(); filtrujPoTagu(); sortujPoTytule(); sortujPoRoku(); dodajFilm()
+// wyswietlFilmyWszystkieIwidoczne() ->
+// filtrujPoRoku(); filtrujPoTagu(); sortujPoTytule(); sortujPoRoku(); dodajFilm()
 
-function liczWidoczne() {
+// sprawdza ile filmow jest aktualnie wyswietlonych w dokumencie HTML
+function liczFilmyWidoczne() {
     let ileWidocznych = 0;
 
-    // let wszystkieLI = document.getElementsByTagName("li");
-    // zastapiono ponizszym bo przy tagach i klinieciu buttona
-    // pokaz wszystkie filmy
-    // wyswietlalo nieprawidlowa liczbe aktualnie widocznych filmow
+    // bo lista ul to kafelki w dokumencie HTML (widoczne i ukryte)
     let wszystkieLI = document.querySelectorAll("ul > li");
     
     for (let i = 0; i < wszystkieLI.length; i++) {
@@ -461,17 +489,21 @@ function liczWidoczne() {
     return ileWidocznych;
 }
 
-function updateFilmyIwidoczne() {
+function updateFilmyWszystkieIwidoczne() {
     liczbaFilmow = listOfMovies.length;
-    liczbaWidocznych = liczWidoczne();
+    liczbaWidocznych = liczFilmyWidoczne();
 }
 
-function wyswietlFilmyIwidoczne() {
+// funkcja wyswietla liczbe filmow w bazie i liczbe filmow widocznych
+function wyswietlFilmyWszystkieIwidoczne() {
     
+    // elementy HTML wyswietlaje liczbe filmow (wszystkie i widoczne)
     let starePar = document.querySelectorAll("p.liczba-filmow");
     
     if (starePar.length) { 	// jesli sa juz stare paragrafy
 	// to podmieniamy ich tresc
+	// zmienne liczbaFilmow i liczbaWidocznych musza byc aktualne
+	// i sa bo zawsze najpierw wywolywana jest updateFilmyWszystkieIwidoczne()
 	starePar[0].innerHTML = "Liczba wszystkich filmów w bazie: " + 
 	    liczbaFilmow;
 	starePar[1].innerHTML = "Liczba filmów aktualnie widocznych: " +
@@ -488,7 +520,7 @@ function wyswietlFilmyIwidoczne() {
 	widoczne.innerHTML = "Liczba filmów aktualnie widocznych: " +
 	    liczbaWidocznych;
 	
-	// wstawienie nowych (zupdate-owanych paragrafow)
+	// wstawienie nowych (zupdate-owanych paragrafow) do HTML
 	output.prepend(filmy, widoczne);
     }
 }
@@ -506,12 +538,12 @@ function wyswietlFilmyIwidoczne() {
 
 // zwraca tablice slow pisanych malymi literami z 1 tytulu (string bez roku)
 // slowa moga sie powtarzac
-function getSlowa(tytul) {
+function getSlowa(tytulBezRoku) {
     // tu damy regex aby wywalic ewentulne przecinki, kropki i dwukropki, z tytulu
     let re = /,*\.*\:* /;
     // slowa sa oddzielone spacjami lub (, i spacja) lub (. i spacja), (: i spacja)
     // typu: "wladca pierscieni: druzyna pierscienia"; "alien vs. predator"; "hobbit, czyli tam i z powrotem"
-    let slowa = tytul.split(re); 
+    let slowa = tytulBezRoku.split(re); 
     slowa = slowa.map((slowo) => slowo.toLocaleLowerCase());
     return slowa;
 }
@@ -519,10 +551,10 @@ function getSlowa(tytul) {
 // zwraca liste slow (array stringow) z arrayu tytuly
 // (array stringow, tj. tytulow bez roku)
 // slowa moga sie powtarzac
-function zwrocSlowaZtytulow(tytuly) {
+function zwrocSlowaZtytulow(tytulyBezRoku) {
     let slowa = [];
-    for (let i = 0; i < tytuly.length; i++) {
-	let zJednegoTytulu = getSlowa(tytuly[i]);
+    for (let i = 0; i < tytulyBezRoku.length; i++) {
+	let zJednegoTytulu = getSlowa(tytulyBezRoku[i]);
 	for (let j = 0; j < zJednegoTytulu.length; j++) {
 	    slowa.push(zJednegoTytulu[j]);
 	}
@@ -537,6 +569,9 @@ function getUniqueWords(slowa) {
     let unikalneSlowa = [];
 
     for (let i = 0; i < slowa.length; i++) {
+	// tu, np. ["ala", "zz"].indexOf("z") zwraca -1
+	// a, np. ["ala", "z"].indexOf("z") zwraca 1
+	// wiec powinno dzialac poprawnie
 	if (unikalneSlowa.indexOf(slowa[i]) === -1){
 	    unikalneSlowa.push(slowa[i]);
 	}
@@ -546,7 +581,7 @@ function getUniqueWords(slowa) {
 }
 
 
-// przyjmuje liczbaWyst (integer) i zwraca string
+// przyjmuje liczbaWyst (integer) danego slowa i zwraca string
 // z wielkoscia, czyli cyfry+litery, np. "12px"
 function zwrocRozmCzcionki(liczbaWyst) {
     let wynik = "";
@@ -571,17 +606,18 @@ function zwrocRozmCzcionki(liczbaWyst) {
 }
 
 
-
 // zwraca tabele tabel
 // [0] - tabela unikalnych slow posortowanych alfabetycznie
 // [1] - tabela wielkosci slow w pixelach w formacie ("12px")
-function zwrocUnikSlowaIwielkCzcionek() {
+function zwrocUnikSlowaIwielkFontow() {
     
     let wszyskieTytuly = listOfMovies.map((film) => getTitle(film));
     let wszystkieSlowaZtytulow = zwrocSlowaZtytulow(wszyskieTytuly);
     let unikalneSlowa = getUniqueWords(wszystkieSlowaZtytulow);
 
     // nie bylo czy sortowac rosnaco, czy malejaco
+    // 'slowa uporzadkuj alfabetycznie' (rosnaco czy malejaco)
+    // damy rosnaco
     unikalneSlowa = unikalneSlowa.sort((a, b) => a.localeCompare(b));
     
     //liczymy liczbe wystapien slowa
@@ -595,14 +631,15 @@ function zwrocUnikSlowaIwielkCzcionek() {
     }
     
     // dodamy na poczatku ten tag "wszystkie tagi" do wyswietlanie wszystkich filmow
-    // lepiej wygladalby przycisk (tak jak ja to zrobilem przy latach)
-    // no ale zadanie to zadanie
-    // bedzie jednak wszystkie tagi bo tytul w stylu: "wszystkie psy ida do nieba" bedzie klopotliwy
+    // lepiej wygladalby przycisk, no ale zadanie to zadanie
+    // bedzie jednak "wszystkie tagi" bo inaczej tytul w stylu: 
+    // "wszystkie psy ida do nieba" bedzie klopotliwy
     unikalneSlowa.unshift("wszystkie tagi");
-    liczbWystSlowa.unshift(4); 	// da to czcionke = 20px
+    liczbWystSlowa.unshift(4); 	// a to da w efekcie czcionke = 20px
    
     // obliczmy wielkosci czcionek
-    let wielkosciCzcionek = liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
+    let wielkosciCzcionek = 
+	liczbWystSlowa.map((wystapienie) => zwrocRozmCzcionki(wystapienie));
 
     return [unikalneSlowa, wielkosciCzcionek];
 }
@@ -613,10 +650,13 @@ function zwrocUnikSlowaIwielkCzcionek() {
 // (pamiętaj o aktualizacji napisu wyświetlającego liczbę widocznych
 // filmów). Dodaj również specjalny tag "wszystkie" w celu
 // wyświetlenia wszystkich filmów.
+// ------ ROZNICA: tu bedzie "wszystkie tagi" bo 
+// inaczej tytul w stylu: 
+// "wszystkie psy ida do nieba" bedzie klopotliwy
 
 // brak danych czy filtrowanie po tagu ma miec efekt
 // AND w stosunku do filtrowania po roku?
-// na razie dano 2 oddzielne filtrowania, a potem jak cos to to mozna zmienic
+// ostatecznie zrobiono efekt AND
 function filtrujPoTagu() {
 
     // usuniecie podswietlenia z tagu
@@ -625,6 +665,8 @@ function filtrujPoTagu() {
 	listaTagow[i].style.backgroundColor = "";
     }
     // wstawienie podswietlenia na aktualnie wybrany tag
+    // aby uzytkownik wiedzial czemu wyswietla tylko tyle kafelkow
+    // (jesli zapomni co ostatnio klikal)
     this.style.backgroundColor = "gold";
 
     wybranyTag = this.innerText;
@@ -633,13 +675,14 @@ function filtrujPoTagu() {
     output.appendChild(utworzListeKafelkow(listOfMovies));
     
     // updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-    updateFilmyIwidoczne();
-    wyswietlFilmyIwidoczne();
+    updateFilmyWszystkieIwidoczne();
+    wyswietlFilmyWszystkieIwidoczne();
     
     // sprawdza czy wszystkie kafelki sa ukryte
     // jesli tak wyswietla info
     if (czyWszystkieUkryte()) {
-	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających zadane kryteria wyszukiwania (" + 
+	infoBrakWynikowDoWyswietlenia.innerHTML = "Brak filmów spełniających " +
+	    "zadane kryteria wyszukiwania (" + 
 	    "rok: '" + wybranyRok + "' ORAZ tag: '" + wybranyTag + "')" +
 	    "</br>Wybierz inne parametry filtrowania";
     } else {
@@ -647,7 +690,6 @@ function filtrujPoTagu() {
     }
 
 }
-
 
 // lista w ktorej wypiszemy tagi
 // aby uniknac konfliktu z ul (kafelki) uzyjemy ol
@@ -662,16 +704,16 @@ function updateListaTagow() {
 	ostatniaOpcja = listaSlow.lastElementChild;
     }
     
-    let tabeleSlowaWielkosci = zwrocUnikSlowaIwielkCzcionek();
+    let tabeleSlowaWielkosci = zwrocUnikSlowaIwielkFontow();
     let unikalneSlowa = tabeleSlowaWielkosci[0];
     let rozmCzcionki = tabeleSlowaWielkosci[1];
 
-    // i teraz for-em wprowadzam inne slowa
+    // i teraz for-em wprowadzam slowa
     for (let i = 0; i < unikalneSlowa.length; i++) {
 	let eltListy = document.createElement("li");
 	eltListy.onclick = filtrujPoTagu;
 	eltListy.style.fontSize = rozmCzcionki[i];
-	// tagowi "wszystkie dla odroznienia damy zielony kolor"
+	// tagowi "wszystkie tagi" dla odroznienia damy zielony kolor
 	if (unikalneSlowa[i] == "wszystkie tagi") {
 	    eltListy.style.color = "green";
 	}
@@ -723,14 +765,13 @@ poleSpan.classList.add("round");
 przyciskDzienNoc.appendChild(poleInput);
 przyciskDzienNoc.appendChild(poleSpan);
 
-function zmienTryb() {
+function zmienTrybDzienNoc() {
     
     let noc = poleInput.checked; // jesli zaznaczony checkbox (true) to tryb nocny
     if (noc){
 	let cialo = document.getElementsByTagName("body")[0];
 	cialo.classList.add("tryb_nocny");
-	// ciemne tlo elementow bedzie stanowic
-	// szare tlo dokumentu i przeziernosc (opacity) kafelkow
+	// ciemne tlo elementow bedzie zdefiniowane w css-ie
 	// (patrz plik: styles.css)
     } else {
 	let cialo = document.getElementsByTagName("body")[0];
@@ -739,7 +780,7 @@ function zmienTryb() {
 
 }
 
-przyciskDzienNoc.onclick = zmienTryb;
+przyciskDzienNoc.onclick = zmienTrybDzienNoc;
 
 output.prepend(imgTrybDzienny, przyciskDzienNoc, imgTrybNocny, parTrybNocny);
 
@@ -752,7 +793,7 @@ output.prepend(imgTrybDzienny, przyciskDzienNoc, imgTrybNocny, parTrybNocny);
 // Spróbuj pozwolić na sortowanie rosnąco (po pierwszym naciśnięciu przycisku) i malejąco
 // (po drugim naciśnięciu przycisku).
 
-// zmnienia przeslany array (lista filmow)
+// bedzie nam mowic czy przeslany array ma byc teraz zmianiony rosnaco czy malejaco
 let tytulRosnaco = true;
 
 // funkcja sortujPoTytule zmienia w miejscu listOfMovies
@@ -763,35 +804,44 @@ function sortujPoTytule() {
 	tytulRosnaco = !tytulRosnaco;
 	
 	// update-owanie napisu w przycisku
-	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
-	przyciskSortujPoTytule.value = "Sortuj po tytule (desc)";
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby
+	// uzytkownik wiedzial co i jak
+	// przy pierwszym wywolaniu tej funkcji zmienna przyciskSortujPoTytule
+	// (patrz nizej bedzie juz istniala)
+	przyciskSortujPoTytule.value = "Sortuj po tytule (malejąco)";
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
 	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-	updateFilmyIwidoczne();
-	wyswietlFilmyIwidoczne();
+	updateFilmyWszystkieIwidoczne();
+	wyswietlFilmyWszystkieIwidoczne();
 
     } else {
 	listOfMovies.sort((a, b) => getTitle(b).localeCompare(getTitle(a)));
 	tytulRosnaco = !tytulRosnaco;
 
 	// update-owanie napisu w przycisku
-	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
-	przyciskSortujPoTytule.value = "Sortuj po tytule (asc)";
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku
+	// aby uzytkownik wiedzial co i jak
+	// przy pierwszym wywolaniu tej funkcji zmienna przyciskSortujPoTytule
+	// (patrz nizej) bedzie juz istniala
+	przyciskSortujPoTytule.value = "Sortuj po tytule (rosnąco)";
 
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
 	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-	updateFilmyIwidoczne();
-	wyswietlFilmyIwidoczne();
+	updateFilmyWszystkieIwidoczne();
+	wyswietlFilmyWszystkieIwidoczne();
     }
 
     // aby przy dodaniu filmu do listy posortowac je odpowiednio przy wyswietleniu
+    // przy pierwszym wywolaniu tej funkcji zmienna ostatnoSortowanePo
+    // bedzie juz istniala
+    // (patrz nizej) bedzie juz istniala
     ostatnioSortowanePo = "tytul";
 }
 
@@ -806,16 +856,19 @@ function sortujPoRoku() {
 	rokRosnaco = !rokRosnaco;
 	
 	// update-owanie napisu w przycisku
-	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
-	przyciskSortujPoRoku.value = "Sortuj po roku (desc)";
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku 
+	// aby uzytkownik wiedzial co i jak
+	// przy pierwszym wywolaniu tej funkcji zmienna przyciskSortujPoRoku
+	// (patrz nizej bedzie juz istniala)
+	przyciskSortujPoRoku.value = "Sortuj po roku (malejąco)";
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
 	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-	updateFilmyIwidoczne();
-	wyswietlFilmyIwidoczne();
+	updateFilmyWszystkieIwidoczne();
+	wyswietlFilmyWszystkieIwidoczne();
 	
 
     } else {
@@ -823,35 +876,40 @@ function sortujPoRoku() {
 	rokRosnaco = !rokRosnaco;
 
 	// update-owanie napisu w przycisku
-	// przy kazdym sortowaniu zmieni sie wartosc przecisku aby uzytkownik wiedzial co i jak
-	przyciskSortujPoRoku.value = "Sortuj po roku (desc)";
+	// przy kazdym sortowaniu zmieni sie wartosc przecisku
+	// aby uzytkownik wiedzial co i jak
+	// przy pierwszym wywolaniu tej funkcji zmienna przyciskSortujPoRoku
+	// (patrz nizej bedzie juz istniala)
+	przyciskSortujPoRoku.value = "Sortuj po roku (rosnąco)";
 	
 	usunListeKafelkow(); 	// usuwa liste kafelkow
 	// a teraz ja odtwarza
 	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-	updateFilmyIwidoczne();
-	wyswietlFilmyIwidoczne();
+	updateFilmyWszystkieIwidoczne();
+	wyswietlFilmyWszystkieIwidoczne();
 
     }
     // aby przy dodaniu filmu do listy posortowac je odpowiednio przy wyswietleniu
+    // przy pierwszym wywolaniu tej funkcji zmienna ostatnoSortowanePo
+    // bedzie juz istniala
     ostatnioSortowanePo = "rok";
 }
-
-// poczatkow pusty string, a potem zmiana na "rok" lub "tytul"
+// ostatnioSortowanePo przyjmuje 3 mozliwe wartosci
+// poczatkowo pusty string, a potem zmiana na "rok" lub "tytul"
 // aby przy dodaniu filmu do listy posortowac je odpowiednio przy wyswietleniu
 let ostatnioSortowanePo = "";
 
 let przyciskSortujPoTytule = document.createElement("input");
 przyciskSortujPoTytule.setAttribute("type", "button");
-przyciskSortujPoTytule.value = "Sortuj po tytule (asc)";
+przyciskSortujPoTytule.value = "Sortuj po tytule (rosnąco)";
 przyciskSortujPoTytule.onclick = sortujPoTytule;
 
 let przyciskSortujPoRoku = document.createElement("input");
 przyciskSortujPoRoku.setAttribute("type", "button");
 // po uruchomieniu strony bedzie tylko sortuj po roku
-przyciskSortujPoRoku.value = "Sortuj po roku (asc)";
+przyciskSortujPoRoku.value = "Sortuj po roku (rosnąco)";
 przyciskSortujPoRoku.onclick = sortujPoRoku;
 
 output.insertBefore(przyciskSortujPoTytule, listaSlow);
@@ -872,9 +930,11 @@ output.insertBefore(przyciskSortujPoRoku, listaSlow);
 
 
 
+// tu bedziemy wypisywac komunikat o bledzie w dodawaniu filmu
 let parWalidacjaDodanegoFilmu = document.createElement("p");
 parWalidacjaDodanegoFilmu.style.color = "red";
 
+// tu bedziemy wpisaywac rok
 let poleDodajRok = document.createElement("input");
 poleDodajRok.setAttribute("type", "text");
 poleDodajRok.setAttribute("placeholder", "Dodaj rok (max. 4 znaki)");
@@ -886,15 +946,16 @@ output.insertBefore(parWalidacjaDodanegoFilmu, listaSlow);
 
 output.insertBefore(poleDodajRok, listaSlow);
 
-
+// tu bedziemy wpisywac tytul
 let poleDodajTytul = document.createElement("input");
 poleDodajTytul.setAttribute("type", "text");
 poleDodajTytul.setAttribute("placeholder", "Dodaj tytuł (max. 50 znaków)");
 poleDodajTytul.setAttribute("size", "50");
 poleDodajTytul.setAttribute("maxlength", "50"); 
 
-function czyCzteryCyfry(tekst) {
-    let czySameCyfry = true;
+// czy rok sklada sie z samych cyfr
+function czySameCyfry(tekst) {
+    let czyTylkoCyfry = true;
     for (let i = 0; i < tekst.length; i++) {
 	if (tekst[i] >= "0" && tekst[i] <= "9") {
 	    // nie rob nic (odpowiedz juz jest true)
@@ -902,7 +963,7 @@ function czyCzteryCyfry(tekst) {
 	    return false;
 	}
     }
-    return czySameCyfry;
+    return czyTylkoCyfry;
 }
 
 // przyjmuje 2 stringi tytul i rok i sprawdza czy film jest juz w bazie filmow
@@ -921,6 +982,9 @@ function czyFilmJestWbazie(tytul, rok) {
     return czyWbazie;
 }
 
+// sprawdza czy wpisany film spelnia kryteria dla dodania
+// jesli NIE: wyswietla info + zwraca false
+// jesli TAG: zwraca true
 function weryfikujFilm() {
     
     let czyOk = true;
@@ -940,10 +1004,10 @@ function weryfikujFilm() {
     if (poleDodajRok.value === "") {
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' nie może być puste!";
 	czyOk = false;
-    } else if (!czyCzteryCyfry(poleDodajRok.value)) {
+    } else if (!czySameCyfry(poleDodajRok.value)) {
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać 4 cyfry";
 	czyOk = false;
-    } else if (poleDodajRok.value < 1888 || 
+    } else if (poleDodajRok.value < 1888 || // patrzy wczesniejszy komentarz
 	       poleDodajRok.value > aktualny_rok) {
 	console.log("wywolanie rok pomiedzy");
 	parWalidacjaDodanegoFilmu.innerHTML += " Pole 'dodaj rok filmu' musi zawierać wartość" +
@@ -957,15 +1021,21 @@ function weryfikujFilm() {
 }
 
 
-
+// dodaje film do bazy danych
+// updatuje wyswietlane kafelki z filmami
+// updateuje liste tagow
+// updateuje select lat (rok filmu)
 function dodajFilm() {
-    
-    parWalidacjaDodanegoFilmu.innerHTML = ""; // resetowanie pola jesli tam wczesniej bylo cos wpisane
+
+    // resetowanie pola jesli tam wczesniej bylo cos wpisane
+    parWalidacjaDodanegoFilmu.innerHTML = "";
     
     let filmDoDodania = "";
     let FilmZweryfikowany = weryfikujFilm();
     
     // weryfikacja dodanego filmu
+    // sprawdza czy wczesniej bylo sortowanie
+    // jesli nie to film dodawany jest na koniec listy filmow i kafelkow
     if (FilmZweryfikowany && ostatnioSortowanePo === ""){
 	// dodanie zweryfikowanego filmu na koniec listy filmow
 	filmDoDodania += poleDodajTytul.value + " (" + poleDodajRok.value + ")";
@@ -982,11 +1052,14 @@ function dodajFilm() {
 	output.appendChild(utworzListeKafelkow(listOfMovies));
 	
 	// updateujemy i wyswietlamy liczbe filmow i liczbe filmow widocznych
-	updateFilmyIwidoczne();
-	wyswietlFilmyIwidoczne();
+	updateFilmyWszystkieIwidoczne();
+	wyswietlFilmyWszystkieIwidoczne();
 	
 	// update listyTagow
 	updateListaTagow();
+
+    // sprawdza czy wczesniej bylo sortowanie
+    // jesli tak (po roku) to film dodawany jest w odp. miejsce listy i kafelkow
     } else if (FilmZweryfikowany && ostatnioSortowanePo === "rok") {
 	rokRosnaco = !rokRosnaco; // zamieniamy do stanu poprzedniego sortowania
 
@@ -994,8 +1067,9 @@ function dodajFilm() {
 	filmDoDodania += poleDodajTytul.value + " (" + poleDodajRok.value + ")";
 	listOfMovies.push(filmDoDodania);
 
-	// sortujemy po tytule
-	// (tu jest usuwanie i tworzenie listy kafelkow, update liczby filmow i filmow widocznych)
+	// sortujemy po roku
+	// (tu jest usuwanie i tworzenie listy kafelkow, 
+	// update liczby filmow i filmow widocznych)
 	sortujPoRoku();
 
 	// updateujemy tagi
@@ -1006,6 +1080,8 @@ function dodajFilm() {
 	parWalidacjaDodanegoFilmu.innerHTML = "Pomyślnie dodano film do listy.";
 	parWalidacjaDodanegoFilmu.style.color = "green";
 	    
+	// sprawdza czy wczesniej bylo sortowanie
+	// jesli tak (po tytule) to film dodawany jest w odp. miejsce listy i kafelkow
 	} else if (FilmZweryfikowany && ostatnioSortowanePo === "tytul"){
 
 	tytulRosnaco = !tytulRosnaco; // zamieniamy do stanu poprzedniego sortowania
@@ -1015,7 +1091,8 @@ function dodajFilm() {
 	listOfMovies.push(filmDoDodania);
 
 	// sortujemy po tytule
-	// (tu jest usuwanie i tworzenie listy kafelkow, update liczby filmow i filmow widocznych)
+	// (tu jest usuwanie i tworzenie listy kafelkow,
+	// update liczby filmow i filmow widocznych)
 	sortujPoTytule();
 	    
 	// updateujemy tagi
@@ -1035,7 +1112,6 @@ let przyciskDodajFilm = document.createElement("input");
 przyciskDodajFilm.setAttribute("type", "button");
 przyciskDodajFilm.value = "Dodaj Nowy Film";
 przyciskDodajFilm.onclick = dodajFilm;
-
 
 output.insertBefore(poleDodajTytul, poleDodajRok);
 output.insertBefore(przyciskDodajFilm, listaSlow);

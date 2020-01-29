@@ -1,8 +1,10 @@
+/* strona jest robiona tylko na mojego lapka (zadnego RWD) */
 ul {
     list-style-type: none;
 }
 
 .kafelek {
+    /* za w3schools z minimalnymi zmianami */
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
     padding: 16px;
@@ -11,19 +13,8 @@ ul {
     background-color: white;
 }
 
-/*  po najechaniu na kafelek sie powieksza */
-
-/* .kafelek:hover { */
-/*     /\* Add shadows to create the "card" effect *\/ */
-/*     box-shadow: 2 8px 16px 2 rgba(0,0,0,0.4); */
-/*     padding: 32px; */
-/*     font-size: 30px; */
-/*     font-style: bold; */
-/*     border-radius: 10px; */
-/*     float: left; */
-/* } */
-
 .inny_kolor {
+    /* za w3schools z minimalnymi zmianami */
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.6);
     padding: 16px;
@@ -32,20 +23,8 @@ ul {
     float: left;
 }
 
-/* /\*  po najechaniu na inny_kolor sie powieksza *\/ */
-
-/* .inny_kolor:hover { */
-/*     /\* Add shadows to create the "card" effect *\/ */
-/*     box-shadow: 2 8px 16px 2 rgba(0,0,0,0.4); */
-/*     padding: 32px; */
-/*     font-size: 30px; */
-/*     font-style: bold; */
-/*     border-radius: 10px; */
-/*     background-color: lightblue; */
-/*     float: left; */
-/* } */
-
 ol > li {
+    /* za w3schools z minimalnymi zmianami */
     /* list-style-type: none; */
     display: inline-block;
     list-style-type: none;
@@ -64,7 +43,8 @@ ol > li {
   display: inline-block;
   width: 60px;
   height: 34px;
-  bottom: 15px; /*zmieniono pozycje slidera aby lepiej pasowal do poziomu ikonek slonca i ksiezyca*/
+  bottom: 15px;
+/*zmieniono pozycje slidera aby lepiej pasowal do poziomu ikonek slonca i ksiezyca*/
 }
 
 /* Hide default HTML checkbox */
