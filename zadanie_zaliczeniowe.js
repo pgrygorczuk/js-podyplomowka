@@ -394,9 +394,15 @@ function usunListeKafelkow() {
 
 // usuwa liste kafelkow i odbudowuje ja przefiltrowana
 function filtrujPoRoku() {
+    // tu musialem zmienic bo option.onclick nie bylo obslugiwane 
+    // przez Chrome, IE i Safari
+    // patrz:
+    // https://stackoverflow.com/questions/9972280/onclick-on-option-tag-not-working-on-ie-and-chrome
+    let wybranyIndex = this.selectedIndex;
+
     // aktualizujemy zmienna globalna wybranyRok
     // uzywa ja, np. utworzListeKafelkow() ponizej
-    wybranyRok = this.innerHTML; 
+    wybranyRok = this[wybranyIndex].innerHTML; 
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
     output.appendChild(utworzListeKafelkow(listOfMovies));
@@ -426,6 +432,12 @@ function filtrujPoRoku() {
 // tu beda lata do wybrania do filtrowania
 let select = document.createElement("select");
 
+// wczesniej bylo do kazdego z options.onclick = filtrujPoRoku()
+// ale okazuje sie, ze w Chromie, IE i Safari nie jest to obslugiwane
+// patrz:
+// https://stackoverflow.com/questions/9972280/onclick-on-option-tag-not-working-on-ie-and-chrome
+select.onclick = filtrujPoRoku;
+
 // funkcja updateuje (przebudowuje) selecta na podstawie aktualnej zawartosci bazyfilmow
 // potrzebne przy dodaniu nowego filmu
 // (bo moze sie wtedy trafic rok ktorego nie bylo jeszcze w select-cie)
@@ -451,7 +463,6 @@ function updateSelectRok() {
     for (let i = 0; i < unikalnePremiery.length; i++) {
 	let opcja = document.createElement("option");
 	opcja.innerHTML = unikalnePremiery[i];
-	opcja.onclick = filtrujPoRoku;
 	if (opcja.innerHTML === wybranyRok){
 	    opcja.selected = true;
 	}
