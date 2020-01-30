@@ -391,7 +391,9 @@ function usunListeKafelkow() {
 
 // usuwa liste kafelkow i odbudowuje ja przefiltrowana
 function filtrujPoRoku() {
-    wybranyRok = this.innerHTML;
+    // aktualizujemy zmienna globalna wybranyRok
+    // uzywa ja, np. utworzListeKafelkow() ponizej
+    wybranyRok = this.innerHTML; 
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
     output.appendChild(utworzListeKafelkow(listOfMovies));
@@ -669,6 +671,8 @@ function filtrujPoTagu() {
     // (jesli zapomni co ostatnio klikal)
     this.style.backgroundColor = "gold";
 
+    // aktualizujemy zmienna globalna wybranyTag
+    // zmienna ta jest uzywana, np. przez utworzListeKafelkow() ponizej
     wybranyTag = this.innerText;
     usunListeKafelkow(); 	// usuwa liste kafelkow
     // a teraz ja odtwarza
