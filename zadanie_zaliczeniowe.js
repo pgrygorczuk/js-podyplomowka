@@ -1,6 +1,10 @@
 // kod byl tylko minimalnie poprawiany/optymalizowany (troche malo mam czasu na
 // wiecej poprawek, a oceniana ma byc poprawnosc dzialania)
 
+// testowano na LinuxMint 19.1 Cinammon
+// przegladarki Firefox 71.0 i Chromium 79.0
+
+
 ///////////////////////////////////////////////////////////////////////////////
 //                            zadanie zaliczeniowe                           //
 ///////////////////////////////////////////////////////////////////////////////
@@ -432,7 +436,7 @@ function filtrujPoRoku() {
 // tu beda lata do wybrania do filtrowania
 let select = document.createElement("select");
 
-// wczesniej bylo do kazdego z options.onclick = filtrujPoRoku()
+// wczesniej bylo do kazdego z options.onclick = filtrujPoRoku
 // ale okazuje sie, ze w Chromie, IE i Safari nie jest to obslugiwane
 // patrz:
 // https://stackoverflow.com/questions/9972280/onclick-on-option-tag-not-working-on-ie-and-chrome
