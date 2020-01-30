@@ -415,6 +415,12 @@ function filtrujPoRoku() {
     } else {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "";
     }
+    
+    // resetujemy monit o dodaniu filmu (aby caly czas sie nie wyswietlal)
+    // paragraf ten bedzie istnial juz w dokumencie HTML
+    // przy pierwszym wywolaniu tej funkcji
+    parWalidacjaDodanegoFilmu.innerHTML = "";
+
 }
 
 // tu beda lata do wybrania do filtrowania
@@ -695,6 +701,11 @@ function filtrujPoTagu() {
     } else {
 	infoBrakWynikowDoWyswietlenia.innerHTML = "";
     }
+    
+    // resetujemy monit o dodaniu filmu (aby caly czas sie nie wyswietlal)
+    // paragraf ten bedzie istnial juz w dokumencie HTML
+    // przy pierwszym wywolaniu tej funkcji
+    parWalidacjaDodanegoFilmu.innerHTML = "";
 
 }
 
@@ -805,6 +816,11 @@ let tytulRosnaco = true;
 
 // funkcja sortujPoTytule zmienia w miejscu listOfMovies
 function sortujPoTytule() {
+    
+    // resetujemy monit o dodaniu filmu (aby caly czas sie nie wyswietlal)
+    // paragraf ten bedzie istnial juz w dokumencie HTML
+    // przy pierwszym wywolaniu tej funkcji
+    parWalidacjaDodanegoFilmu.innerHTML = "";
 
     if (tytulRosnaco) {
 	// mozliwosc przeslania wlasnej funkcji sortujacej daje duza plastycznosc
@@ -858,6 +874,11 @@ let rokRosnaco = true;
 
 // funkcja sortujPoRoku zmienia w miejscu listOfMovies
 function sortujPoRoku() {
+    
+    // resetujemy monit o dodaniu filmu (aby caly czas sie nie wyswietlal)
+    // paragraf ten bedzie istnial juz w dokumencie HTML
+    // przy pierwszym wywolaniu tej funkcji
+    parWalidacjaDodanegoFilmu.innerHTML = "";
     
     if (rokRosnaco) {
 	// mozliwosc przeslania wlasnej funkcji sortujacej daje duza plastycznosc
@@ -946,6 +967,10 @@ output.insertBefore(przyciskSortujPoRoku, listaSlow);
 let parWalidacjaDodanegoFilmu = document.createElement("p");
 parWalidacjaDodanegoFilmu.style.color = "firebrick";
 
+// tag-html formularz
+let formularzDodajFilm = document.createElement("form");
+// nie bedziemy do niego dodawac atrybutow action i method bo i tak cale dzialanie bedzie tylo lokalne
+
 // tu bedziemy wpisaywac rok
 let poleDodajRok = document.createElement("input");
 poleDodajRok.setAttribute("type", "text");
@@ -953,10 +978,9 @@ poleDodajRok.setAttribute("placeholder", "Dodaj rok (max. 4 znaki)");
 poleDodajRok.setAttribute("size", "20");
 poleDodajRok.setAttribute("maxlength", "4"); 
 
-
+// wstawiamy paragraf o weryfikacji DodanegoFilmu do formularza
 output.insertBefore(parWalidacjaDodanegoFilmu, listaSlow);
 
-output.insertBefore(poleDodajRok, listaSlow);
 
 // tu bedziemy wpisywac tytul
 let poleDodajTytul = document.createElement("input");
@@ -1124,6 +1148,13 @@ przyciskDodajFilm.setAttribute("type", "button");
 przyciskDodajFilm.value = "Dodaj Nowy Film";
 przyciskDodajFilm.onclick = dodajFilm;
 
-output.insertBefore(poleDodajTytul, poleDodajRok);
-output.insertBefore(przyciskDodajFilm, listaSlow);
+// dodajemy poleDodajTytul do formularza
+formularzDodajFilm.appendChild(poleDodajTytul);
+// dodajemy poleDodajRok do formularza
+formularzDodajFilm.appendChild(poleDodajRok);
+// dodajemy i przyciskDodajFilm
+formularzDodajFilm.appendChild(przyciskDodajFilm);
+
+// wstawiamy to do HTML-a
+output.insertBefore(formularzDodajFilm, listaSlow);
 
