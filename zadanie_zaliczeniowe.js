@@ -1155,6 +1155,10 @@ function dodajFilm() {
 	
     }
     
+    // resetowanie zawartosci poleDodajTytul i poleDodajRok
+    // po dodaniu nowego filmu
+    poleDodajTytul.value = "";
+    poleDodajRok.value = "";
     
 }
 
