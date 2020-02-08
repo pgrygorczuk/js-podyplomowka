@@ -2,6 +2,6 @@
 
 Zadanie zaliczeniowe na koniec semestru z 'Podstawy JavaScript'
 
-Do własnego użytku nie powinno być używane przez nikogo.
+Do własnego użytku nie powinno być używane przez nikogo.</br>
 ,,,,,,,,,,,,,,,,,,,,,
 For my personal use only, should not be used by anyone.
